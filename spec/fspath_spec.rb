@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Fspath" do
-  it "fails" do
-    fail "hey buddy, you should probably rename this file and start specing for real"
+describe FSPath do
+  it "should inherit from Pathname" do
+    FSPath.new('.').should be_kind_of(Pathname)
   end
 end

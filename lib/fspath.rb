@@ -1,0 +1,2 @@
+class FSPath < Pathname
+end

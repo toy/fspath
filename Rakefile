@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'bundler'
 begin
   Bundler.setup(:default, :development)
@@ -7,44 +6,44 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'rake'
+
+name = 'fspath'
+summary = 'Better than Pathname'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "fspath"
+  gem.name = name
   gem.homepage = "http://github.com/toy/fspath"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "ivan@workisfun.ru"
+  gem.summary = summary
   gem.authors = ["Boba Fat"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
+
+desc "Replace system gem with symlink to this folder"
+task 'ghost' do
+  gem_path = Gem.searcher.find(name).full_gem_path
+  current_path = File.expand_path('.')
+  system('rm', '-r', gem_path)
+  system('ln', '-s', current_path, gem_path)
+end
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.rspec_opts = ['--colour --format progress']
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
+  spec.rspec_opts = ['--colour --format progress']
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
+  spec.rcov_opts = ['--exclude', 'spec']
 end
 
-task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "fspath #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+task :spec_with_rcov_and_open => :rcov do
+  `open coverage/index.html`
 end
+
+desc 'Default: run specs.'
+task :default => :spec_with_rcov_and_open
