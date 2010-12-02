@@ -11,13 +11,19 @@ name = 'fspath'
 summary = 'Better than Pathname'
 
 require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  gem.name = name
-  gem.homepage = "http://github.com/toy/fspath"
-  gem.summary = summary
-  gem.authors = ["Boba Fat"]
+[nil].each do |platform|
+  Jeweler::Tasks.new do |gem|
+    gem.name = name
+    gem.homepage = "http://github.com/toy/fspath"
+    gem.summary = summary
+    gem.authors = ["Boba Fat"]
+    gem.platform = platform
+    if platform == 'darwin'
+      gem.add_dependency 'rb-appscript'
+    end
+  end
+  Jeweler::RubygemsDotOrgTasks.new
 end
-Jeweler::RubygemsDotOrgTasks.new
 
 desc "Replace system gem with symlink to this folder"
 task 'ghost' do
