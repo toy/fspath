@@ -5,11 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fspath}
-  s.version = "0.0.1"
+  s.version = "0.0.2.3"
+  s.platform = %q{darwin}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Boba Fat"]
-  s.date = %q{2010-11-30}
+  s.date = %q{2010-12-03}
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -21,6 +22,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "fspath.gemspec",
     "lib/fspath.rb",
     "spec/fspath_spec.rb",
     "spec/spec_helper.rb"
@@ -39,17 +41,20 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rb-appscript>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.1.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.1"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
+      s.add_dependency(%q<rb-appscript>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.1.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
       s.add_dependency(%q<rcov>, [">= 0"])
     end
   else
+    s.add_dependency(%q<rb-appscript>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.1.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
