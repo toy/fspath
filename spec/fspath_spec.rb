@@ -11,11 +11,11 @@ describe FSPath do
 
   describe "~" do
     it "should return current user home directory" do
-      FSPath.~.should == FSPath.new(File.expand_path('~'))
+      FSPath.~.should == FSPath(File.expand_path('~'))
     end
 
     it "should return other user home directory" do
-      FSPath.~('root').should == FSPath.new(File.expand_path('~root'))
+      FSPath.~('root').should == FSPath(File.expand_path('~root'))
     end
   end
 end
