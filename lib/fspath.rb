@@ -16,6 +16,12 @@ class FSPath < Pathname
   def +(part)
     self.class.new(super + part)
   end
+
+  if RUBY_PLATFORM.downcase.include?('darwin')
+    def darwin!
+      p :darwin
+    end
+  end
 end
 
 module Kernel
