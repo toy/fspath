@@ -11,11 +11,15 @@ name = 'fspath'
 summary = 'Better than Pathname'
 
 require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  gem.name = name
-  gem.homepage = "http://github.com/toy/fspath"
-  gem.summary = summary
-  gem.authors = ["Boba Fat"]
+[nil, 'darwin'].each do |platform|
+  Jeweler::Tasks.new do |gem|
+    gem.name = name
+    gem.homepage = "http://github.com/toy/fspath"
+    gem.summary = summary
+    gem.authors = ["Boba Fat"]
+    gem.platform = platform
+    gem.add_dependency 'rb-appscript' if platform == 'darwin'
+  end
 end
 Jeweler::RubygemsDotOrgTasks.new
 
