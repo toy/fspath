@@ -1,3 +1,6 @@
 /pkg
 /.bundle
 /coverage
+/.yardoc
+/doc
+/sources
