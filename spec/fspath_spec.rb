@@ -18,4 +18,18 @@ describe FSPath do
       FSPath.~('root').should == FSPath(File.expand_path('~root'))
     end
   end
+
+  describe "/" do
+    it "should join path with string" do
+      (FSPath('a') / 'b').should == FSPath('a/b')
+    end
+
+    it "should join path with another FSPath" do
+      (FSPath('a') / FSPath('b')).should == FSPath('a/b')
+    end
+
+    it "should join with path starting with slash" do
+      (FSPath('a') / '/b').should == FSPath('a/b')
+    end
+  end
 end

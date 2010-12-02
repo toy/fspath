@@ -6,6 +6,12 @@ class FSPath < Pathname
       new(File.expand_path("~#{name}"))
     end
   end
+
+  # join paths using File.join
+  def /(other)
+    self.class.new(File.join(@path, other.to_s))
+  end
+
 end
 
 module Kernel
