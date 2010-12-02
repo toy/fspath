@@ -32,4 +32,10 @@ describe FSPath do
       (FSPath('a') / '/b').should == FSPath('a/b')
     end
   end
+
+  describe "+" do
+    it "should return instance of FSPath" do
+      (FSPath('a') + 'b').should be_instance_of(FSPath)
+    end
+  end
 end

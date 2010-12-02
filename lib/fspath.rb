@@ -12,6 +12,10 @@ class FSPath < Pathname
     self.class.new(File.join(@path, other.to_s))
   end
 
+  # fixing Pathname.+
+  def +(part)
+    self.class.new(super + part)
+  end
 end
 
 module Kernel
