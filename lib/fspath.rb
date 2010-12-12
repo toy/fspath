@@ -12,9 +12,11 @@ class FSPath < Pathname
     self.class.new(File.join(@path, other.to_s))
   end
 
-  # Fixing Pathname.+
-  def +(part)
-    self.class.new(super + part)
+  unless (new('a') + 'b').is_a?(self)
+    # Fixing Pathname.+
+    def +(part)
+      self.class.new(super + part)
+    end
   end
 
   if RUBY_PLATFORM.downcase.include?('darwin')
