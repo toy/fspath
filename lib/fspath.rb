@@ -20,9 +20,6 @@ class FSPath < Pathname
   end
 
   if RUBY_PLATFORM.downcase.include?('darwin')
-    def darwin!
-      p :darwin
-    end
   end
 end
 
