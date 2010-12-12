@@ -1,18 +1,18 @@
 class FSPath < Pathname
   class << self
-    # return current user home path if called without argument
-    # if called with argument return specified user home path
+    # Return current user home path if called without argument.
+    # If called with argument return specified user home path.
     def ~(name = nil)
       new(File.expand_path("~#{name}"))
     end
   end
 
-  # join paths using File.join
+  # Join paths using File.join
   def /(other)
     self.class.new(File.join(@path, other.to_s))
   end
 
-  # fixing Pathname.+
+  # Fixing Pathname.+
   def +(part)
     self.class.new(super + part)
   end
