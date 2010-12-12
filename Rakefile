@@ -1,52 +1,42 @@
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
+require 'rubygems'
+require 'rake'
+require 'jeweler'
+require 'rake/gem_ghost_task'
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
 name = 'fspath'
-summary = 'Better than Pathname'
 
-require 'jeweler'
 [nil, 'darwin'].each do |platform|
   spec = Gem::Specification.new do |gem|
     gem.name = name
-    gem.homepage = "http://github.com/toy/fspath"
-    gem.summary = summary
-    gem.authors = ["Boba Fat"]
+    gem.summary = %Q{Better than Pathname}
+    gem.homepage = "http://github.com/toy/#{name}"
+    gem.license = 'MIT'
+    gem.authors = ['Boba Fat']
     gem.platform = platform
     if platform == 'darwin'
       gem.add_dependency 'rb-appscript'
     end
+    gem.add_development_dependency 'jeweler', '~> 1.5.1'
+    gem.add_development_dependency 'rake-gem-ghost'
+    gem.add_development_dependency 'rspec'
   end
   Jeweler::RubygemsDotOrgTasks.new do |rubygems_tasks|
     rubygems_tasks.jeweler = Jeweler::Tasks.new(spec).jeweler
   end
+  Rake::GemGhostTask.new
 end
 
-desc "Replace system gem with symlink to this folder"
-task 'ghost' do
-  gem_path = Gem.searcher.find(name).full_gem_path
-  current_path = File.expand_path('.')
-  system('rm', '-r', gem_path)
-  system('ln', '-s', current_path, gem_path)
-end
-
-require 'rspec/core'
-require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.rspec_opts = ['--colour --format progress']
-  spec.pattern = FileList['spec/**/*_spec.rb']
+  spec.rspec_opts = ['--colour --format progress --loadby mtime --reverse']
+  spec.pattern = 'spec/**/*_spec.rb'
 end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.rspec_opts = ['--colour --format progress']
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
-  spec.rcov_opts = ['--exclude', 'spec']
 end
 
 task :spec_with_rcov_and_open => :rcov do
