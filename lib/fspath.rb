@@ -1,3 +1,5 @@
+require 'pathname'
+
 class FSPath < Pathname
   class << self
     # Return current user home path if called without argument.
