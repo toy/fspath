@@ -39,7 +39,7 @@ describe FSPath do
     end
   end
 
-  describe "write" do
+  describe "writing" do
     before do
       @path = FSPath.new('test')
       @file = mock(:file)
@@ -50,18 +50,37 @@ describe FSPath do
       @file.stub!(:write).and_return(@size)
     end
 
-    it "should open file for writing" do
-      @path.should_receive(:open).with('wb')
-      @path.write(@data)
+    describe "write" do
+      it "should open file for writing" do
+        @path.should_receive(:open).with('wb')
+        @path.write(@data)
+      end
+
+      it "should write data" do
+        @file.should_receive(:write).with(@data)
+        @path.write(@data)
+      end
+
+      it "should return result of write" do
+        @path.write(@data).should == @size
+      end
     end
 
-    it "should write data" do
-      @file.should_receive(:write).with(@data)
-      @path.write(@data)
-    end
+    describe "append" do
+      it "should open file for writing" do
+        @path.should_receive(:open).with('ab')
+        @path.append(@data)
+      end
 
-    it "should return result of write" do
-      @path.write(@data).should == @size
+      it "should write data" do
+        @file.should_receive(:write).with(@data)
+        @path.append(@data)
+      end
+
+      it "should return result of write" do
+        @path.append(@data).should == @size
+      end
     end
   end
+
 end
