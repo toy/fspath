@@ -89,4 +89,16 @@ describe FSPath do
     end
   end
 
+  describe "glob" do
+    it "should join with arguments and expand glob" do
+      FSPath.should_receive(:glob).with('a/b/c/**/*')
+      FSPath('a/b/c').glob('**', '*')
+    end
+
+    it "should join with arguments and expand glob" do
+      @flags = 12345
+      FSPath.should_receive(:glob).with('a/b/c/**/*', @flags)
+      FSPath('a/b/c').glob('**', '*', @flags)
+    end
+  end
 end

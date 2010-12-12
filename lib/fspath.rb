@@ -38,6 +38,14 @@ class FSPath < Pathname
     self.class.new(@path.gsub(/([\*\?\[\]\{\}])/, '\\\\\1'))
   end
 
+  # Expand glob
+  def glob(*args, &block)
+    flags = args.last.is_a?(Fixnum) ? args.pop : nil
+    args = [File.join(self, *args)]
+    args << flags if flags
+    self.class.glob(*args, &block)
+  end
+
   if RUBY_PLATFORM.downcase.include?('darwin')
   end
 end
