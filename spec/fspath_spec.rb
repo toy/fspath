@@ -101,4 +101,32 @@ describe FSPath do
       FSPath('a/b/c').glob('**', '*', @flags)
     end
   end
+
+  if RUBY_PLATFORM.downcase.include?('darwin')
+    before do
+      @file_path = File.expand_path(__FILE__)
+    end
+
+    describe "mac related" do
+      describe "mac_alias" do
+        it "should return instance of MacTypes::Alias" do
+          FSPath(@file_path).mac_alias.should be_kind_of(MacTypes::Alias)
+        end
+
+        it "should point to same path" do
+          FSPath(@file_path).mac_alias.path.should == @file_path
+        end
+      end
+
+      describe "mac_file_url" do
+        it "should return instance of MacTypes::FileURL" do
+          FSPath(@file_path).mac_file_url.should be_kind_of(MacTypes::FileURL)
+        end
+
+        it "should point to same path" do
+          FSPath(@file_path).mac_file_url.path.should == @file_path
+        end
+      end
+    end
+  end
 end

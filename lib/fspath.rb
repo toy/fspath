@@ -49,6 +49,17 @@ class FSPath < Pathname
   end
 
   if RUBY_PLATFORM.downcase.include?('darwin')
+    require 'appscript'
+
+    # MacTypes::Alias for path
+    def mac_alias
+      MacTypes::Alias.path(@path)
+    end
+
+    # MacTypes::FileURL for path
+    def mac_file_url
+      MacTypes::FileURL.path(@path)
+    end
   end
 end
 
