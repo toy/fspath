@@ -83,4 +83,10 @@ describe FSPath do
     end
   end
 
+  describe "escape_glob" do
+    it "should escape glob pattern characters" do
+      FSPath('*/**/?[a-z]{abc,def}').escape_glob.should == FSPath('\*/\*\*/\?\[a-z\]\{abc,def\}')
+    end
+  end
+
 end

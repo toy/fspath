@@ -33,6 +33,11 @@ class FSPath < Pathname
     end
   end
 
+  # Escape characters in glob pattern
+  def escape_glob
+    self.class.new(@path.gsub(/([\*\?\[\]\{\}])/, '\\\\\1'))
+  end
+
   if RUBY_PLATFORM.downcase.include?('darwin')
   end
 end
