@@ -19,6 +19,13 @@ class FSPath < Pathname
     end
   end
 
+  # Write data to file
+  def write(data)
+    open('wb') do |f|
+      f.write(data)
+    end
+  end
+
   if RUBY_PLATFORM.downcase.include?('darwin')
   end
 end

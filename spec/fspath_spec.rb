@@ -38,4 +38,30 @@ describe FSPath do
       (FSPath('a') + 'b').should be_instance_of(FSPath)
     end
   end
+
+  describe "write" do
+    before do
+      @path = FSPath.new('test')
+      @file = mock(:file)
+      @data = mock(:data)
+      @size = mock(:size)
+
+      @path.stub!(:open).and_yield(@file)
+      @file.stub!(:write).and_return(@size)
+    end
+
+    it "should open file for writing" do
+      @path.should_receive(:open).with('wb')
+      @path.write(@data)
+    end
+
+    it "should write data" do
+      @file.should_receive(:write).with(@data)
+      @path.write(@data)
+    end
+
+    it "should return result of write" do
+      @path.write(@data).should == @size
+    end
+  end
 end
