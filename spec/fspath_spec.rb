@@ -162,7 +162,7 @@ describe FSPath do
         end
       end
 
-      describe "labels" do
+      describe "finder labels" do
         describe "getting" do
           it "should call label_index.get on mac_finder_alias" do
             @path = FSPath('to_label')
@@ -173,7 +173,7 @@ describe FSPath do
             @finder_alias.should_receive(:label_index).and_return(@label_index)
             @label_index.should_receive(:get).and_return(0)
 
-            @path.label
+            @path.finder_label
           end
 
           it "should return apporitate label" do
@@ -184,9 +184,9 @@ describe FSPath do
             @path.stub!(:mac_finder_alias).and_return(@finder_alias)
             @finder_alias.stub!(:label_index).and_return(@label_index)
 
-            FSPath::LABEL_COLORS.each_with_index do |label, index|
+            FSPath::FINDER_LABEL_COLORS.each_with_index do |label, index|
               @label_index.stub!(:get).and_return(index)
-              @path.label.should == label
+              @path.finder_label.should == label
             end
           end
         end
@@ -201,7 +201,7 @@ describe FSPath do
             @finder_alias.should_receive(:label_index).and_return(@label_index)
             @label_index.should_receive(:set)
 
-            @path.label = nil
+            @path.finder_label = nil
           end
 
           describe "index" do
@@ -215,31 +215,31 @@ describe FSPath do
             end
 
             it "should call label_index.set with apporitate index" do
-              FSPath::LABEL_COLORS.each_with_index do |label, index|
+              FSPath::FINDER_LABEL_COLORS.each_with_index do |label, index|
                 @label_index.should_receive(:set).with(index).ordered
-                @path.label = label
+                @path.finder_label = label
               end
             end
 
             it "should accept aliases" do
-              FSPath::LABEL_COLOR_ALIASES.each do |label_alias, label|
-                index = FSPath::LABEL_COLORS.index(label)
+              FSPath::FINDER_LABEL_COLOR_ALIASES.each do |label_alias, label|
+                index = FSPath::FINDER_LABEL_COLORS.index(label)
                 @label_index.should_receive(:set).with(index).ordered
-                @path.label = label_alias
+                @path.finder_label = label_alias
               end
             end
 
             it "should set to none when called with nil or false" do
               [nil, false].each do |label|
                 @label_index.should_receive(:set).with(0).ordered
-                @path.label = label
+                @path.finder_label = label
               end
             end
 
             it "should raise when called with something else" do
               [true, :shitty, 'hello'].each do |label|
                 proc do
-                  @path.label = label
+                  @path.finder_label = label
                 end.should raise_error("Unknown label #{label.inspect}")
               end
             end

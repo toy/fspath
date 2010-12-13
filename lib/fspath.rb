@@ -87,14 +87,14 @@ class FSPath < Pathname
         mac_finder_alias.delete
       end
 
-      LABEL_COLORS = [:none, :orange, :red, :yellow, :blue, :purple, :green, :gray].freeze
-      LABEL_COLOR_ALIASES = {:grey => :gray}.freeze
-      def label
-        LABEL_COLORS[mac_finder_alias.label_index.get]
+      FINDER_LABEL_COLORS = [:none, :orange, :red, :yellow, :blue, :purple, :green, :gray].freeze
+      FINDER_LABEL_COLOR_ALIASES = {:grey => :gray}.freeze
+      def finder_label
+        FINDER_LABEL_COLORS[mac_finder_alias.label_index.get]
       end
-      def label=(color)
-        color = LABEL_COLOR_ALIASES[color] || color || :none
-        index = LABEL_COLORS.index(color)
+      def finder_label=(color)
+        color = FINDER_LABEL_COLOR_ALIASES[color] || color || :none
+        index = FINDER_LABEL_COLORS.index(color)
         raise "Unknown label #{color.inspect}" unless index
         mac_finder_alias.label_index.set(index)
       end
