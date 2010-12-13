@@ -48,6 +48,31 @@ class FSPath < Pathname
     self.class.glob(*args, &block)
   end
 
+  # Iterates over and yields each element in the given path in ascending order
+  def ascend(&block)
+    ascendants = []
+    path = @path
+    ascendants << self
+    while r = chop_basename(path)
+      path, name = r
+      break if path.empty?
+      ascendants << self.class.new(del_trailing_separator(path))
+    end
+    if block
+      ascendants.each(&block)
+    end
+    ascendants
+  end
+
+  # Iterates over and yields each element in the given path in descending order
+  def descend(&block)
+    descendants = ascend.reverse
+    if block
+      descendants.each(&block)
+    end
+    descendants
+  end
+
   if RUBY_PLATFORM.downcase.include?('darwin')
     require 'appscript'
 

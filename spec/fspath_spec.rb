@@ -102,6 +102,46 @@ describe FSPath do
     end
   end
 
+  describe "iterate each element" do
+    describe "ascend" do
+      before do
+        @path = FSPath('/a/b/c')
+        @ascendants = %w[/a/b/c /a/b /a /].map(&method(:FSPath))
+      end
+
+      it "should return list of ascendants" do
+        @path.ascend.should == @ascendants
+      end
+
+      it "should yield and return list of ascendants if called with block" do
+        ascendants = []
+        @path.ascend do |path|
+          ascendants << path
+        end.should == @ascendants
+        ascendants.should == @ascendants
+      end
+    end
+
+    describe "descend" do
+      before do
+        @path = FSPath('/a/b/c')
+        @descendants = %w[/ /a /a/b /a/b/c].map(&method(:FSPath))
+      end
+
+      it "should return list of descendants" do
+        @path.descend.should == @descendants
+      end
+
+      it "should yield and return list of descendants if called with block" do
+        descendants = []
+        @path.descend do |path|
+          descendants << path
+        end.should == @descendants
+        descendants.should == @descendants
+      end
+    end
+  end
+
   if RUBY_PLATFORM.downcase.include?('darwin')
     before do
       @file_path = File.expand_path(__FILE__)
