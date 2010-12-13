@@ -73,6 +73,11 @@ class FSPath < Pathname
     descendants
   end
 
+  # Returns path parts
+  def parts(&block)
+    split_names(@path).flatten
+  end
+
   if RUBY_PLATFORM.downcase.include?('darwin')
     require 'appscript'
 

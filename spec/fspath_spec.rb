@@ -102,7 +102,7 @@ describe FSPath do
     end
   end
 
-  describe "iterate each element" do
+  describe "path parts" do
     describe "ascend" do
       before do
         @path = FSPath('/a/b/c')
@@ -138,6 +138,12 @@ describe FSPath do
           descendants << path
         end.should == @descendants
         descendants.should == @descendants
+      end
+    end
+
+    describe "parts" do
+      it "should return path parts as strings" do
+        FSPath('/a/b/c').parts.should == %w[/ a b c]
       end
     end
   end
