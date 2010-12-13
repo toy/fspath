@@ -90,6 +90,16 @@ class FSPath < Pathname
     def mac_file_url
       MacTypes::FileURL.path(@path)
     end
+
+    # Finder item for path through mac_alias
+    def mac_finder_alias
+      Appscript.app('Finder').items[mac_alias]
+    end
+
+    # Finder item for path through mac_alias
+    def mac_finder_file_url
+      Appscript.app('Finder').items[mac_file_url]
+    end
   end
 end
 

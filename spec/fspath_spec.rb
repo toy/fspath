@@ -173,6 +173,18 @@ describe FSPath do
           FSPath(@file_path).mac_file_url.path.should == @file_path
         end
       end
+
+      describe "mac_finder_alias" do
+        it "should return same ref" do
+          FSPath(@file_path).mac_finder_alias.should == Appscript.app('Finder').items[FSPath(@file_path).mac_alias]
+        end
+      end
+
+      describe "mac_finder_file_url" do
+        it "should return same ref" do
+          FSPath(@file_path).mac_finder_file_url.should == Appscript.app('Finder').items[FSPath(@file_path).mac_finder_file_url]
+        end
+      end
     end
   end
 end
