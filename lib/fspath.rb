@@ -79,43 +79,47 @@ class FSPath < Pathname
   end
 
   if RUBY_PLATFORM.downcase.include?('darwin')
-    require 'appscript'
+    begin
+      require 'appscript'
 
-    # Move to trash using finder
-    def move_to_trash
-      mac_finder_alias.delete
-    end
+      # Move to trash using finder
+      def move_to_trash
+        mac_finder_alias.delete
+      end
 
-    LABEL_COLORS = [:none, :orange, :red, :yellow, :blue, :purple, :green, :gray].freeze
-    LABEL_COLOR_ALIASES = {:grey => :gray}.freeze
-    def label
-      LABEL_COLORS[mac_finder_alias.label_index.get]
-    end
-    def label=(color)
-      color = LABEL_COLOR_ALIASES[color] || color || :none
-      index = LABEL_COLORS.index(color)
-      raise "Unknown label #{color.inspect}" unless index
-      mac_finder_alias.label_index.set(index)
-    end
+      LABEL_COLORS = [:none, :orange, :red, :yellow, :blue, :purple, :green, :gray].freeze
+      LABEL_COLOR_ALIASES = {:grey => :gray}.freeze
+      def label
+        LABEL_COLORS[mac_finder_alias.label_index.get]
+      end
+      def label=(color)
+        color = LABEL_COLOR_ALIASES[color] || color || :none
+        index = LABEL_COLORS.index(color)
+        raise "Unknown label #{color.inspect}" unless index
+        mac_finder_alias.label_index.set(index)
+      end
 
-    # MacTypes::Alias for path
-    def mac_alias
-      MacTypes::Alias.path(@path)
-    end
+      # MacTypes::Alias for path
+      def mac_alias
+        MacTypes::Alias.path(@path)
+      end
 
-    # MacTypes::FileURL for path
-    def mac_file_url
-      MacTypes::FileURL.path(@path)
-    end
+      # MacTypes::FileURL for path
+      def mac_file_url
+        MacTypes::FileURL.path(@path)
+      end
 
-    # Finder item for path through mac_alias
-    def mac_finder_alias
-      Appscript.app('Finder').items[mac_alias]
-    end
+      # Finder item for path through mac_alias
+      def mac_finder_alias
+        Appscript.app('Finder').items[mac_alias]
+      end
 
-    # Finder item for path through mac_alias
-    def mac_finder_file_url
-      Appscript.app('Finder').items[mac_file_url]
+      # Finder item for path through mac_alias
+      def mac_finder_file_url
+        Appscript.app('Finder').items[mac_file_url]
+      end
+    rescue LoadError
+      warn "Can't load appscript"
     end
   end
 end
