@@ -149,50 +149,54 @@ describe FSPath do
   end
 
   if RUBY_PLATFORM.downcase.include?('darwin')
-    before do
-      @file_path = File.expand_path(__FILE__)
-    end
-
     describe "mac related" do
       describe "move_to_trash" do
         it "should call delete on mac_finder_alias" do
           @path = FSPath('to_delete')
           @finder_alias = mock(:finder_alias)
+
           @path.should_receive(:mac_finder_alias).and_return(@finder_alias)
           @finder_alias.should_receive(:delete)
+
           @path.move_to_trash
         end
       end
 
-      describe "mac_alias" do
-        it "should return instance of MacTypes::Alias" do
-          FSPath(@file_path).mac_alias.should be_kind_of(MacTypes::Alias)
+      describe "appscript objects" do
+        before do
+          @file_path = File.expand_path(__FILE__)
         end
 
-        it "should point to same path" do
-          FSPath(@file_path).mac_alias.path.should == @file_path
-        end
-      end
+        describe "mac_alias" do
+          it "should return instance of MacTypes::Alias" do
+            FSPath(@file_path).mac_alias.should be_kind_of(MacTypes::Alias)
+          end
 
-      describe "mac_file_url" do
-        it "should return instance of MacTypes::FileURL" do
-          FSPath(@file_path).mac_file_url.should be_kind_of(MacTypes::FileURL)
+          it "should point to same path" do
+            FSPath(@file_path).mac_alias.path.should == @file_path
+          end
         end
 
-        it "should point to same path" do
-          FSPath(@file_path).mac_file_url.path.should == @file_path
-        end
-      end
+        describe "mac_file_url" do
+          it "should return instance of MacTypes::FileURL" do
+            FSPath(@file_path).mac_file_url.should be_kind_of(MacTypes::FileURL)
+          end
 
-      describe "mac_finder_alias" do
-        it "should return same ref" do
-          FSPath(@file_path).mac_finder_alias.should == Appscript.app('Finder').items[FSPath(@file_path).mac_alias]
+          it "should point to same path" do
+            FSPath(@file_path).mac_file_url.path.should == @file_path
+          end
         end
-      end
 
-      describe "mac_finder_file_url" do
-        it "should return same ref" do
-          FSPath(@file_path).mac_finder_file_url.should == Appscript.app('Finder').items[FSPath(@file_path).mac_file_url]
+        describe "mac_finder_alias" do
+          it "should return same ref" do
+            FSPath(@file_path).mac_finder_alias.should == Appscript.app('Finder').items[FSPath(@file_path).mac_alias]
+          end
+        end
+
+        describe "mac_finder_file_url" do
+          it "should return same ref" do
+            FSPath(@file_path).mac_finder_file_url.should == Appscript.app('Finder').items[FSPath(@file_path).mac_file_url]
+          end
         end
       end
     end
