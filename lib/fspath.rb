@@ -81,6 +81,11 @@ class FSPath < Pathname
   if RUBY_PLATFORM.downcase.include?('darwin')
     require 'appscript'
 
+    # Move to trash using finder
+    def move_to_trash
+      mac_finder_alias.delete
+    end
+
     # MacTypes::Alias for path
     def mac_alias
       MacTypes::Alias.path(@path)

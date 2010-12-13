@@ -154,6 +154,16 @@ describe FSPath do
     end
 
     describe "mac related" do
+      describe "move_to_trash" do
+        it "should call delete on mac_finder_alias" do
+          @path = FSPath('to_delete')
+          @finder_alias = mock(:finder_alias)
+          @path.should_receive(:mac_finder_alias).and_return(@finder_alias)
+          @finder_alias.should_receive(:delete)
+          @path.move_to_trash
+        end
+      end
+
       describe "mac_alias" do
         it "should return instance of MacTypes::Alias" do
           FSPath(@file_path).mac_alias.should be_kind_of(MacTypes::Alias)
