@@ -29,7 +29,7 @@ name = 'fspath'
 end
 
 RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.rspec_opts = ['--colour --format progress --loadby mtime --reverse']
+  spec.rspec_opts = ['--colour --format progress']
   spec.pattern = 'spec/**/*_spec.rb'
 end
 
