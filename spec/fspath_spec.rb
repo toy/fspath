@@ -182,7 +182,7 @@ describe FSPath do
 
       describe "mac_finder_file_url" do
         it "should return same ref" do
-          FSPath(@file_path).mac_finder_file_url.should == Appscript.app('Finder').items[FSPath(@file_path).mac_finder_file_url]
+          FSPath(@file_path).mac_finder_file_url.should == Appscript.app('Finder').items[FSPath(@file_path).mac_file_url]
         end
       end
     end
