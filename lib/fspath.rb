@@ -99,6 +99,14 @@ class FSPath < Pathname
         mac_finder_alias.label_index.set(index)
       end
 
+      def spotlight_comment
+        mac_finder_alias.comment.get
+      end
+
+      def spotlight_comment=(comment)
+        mac_finder_alias.comment.set(comment.to_s)
+      end
+
       # MacTypes::Alias for path
       def mac_alias
         MacTypes::Alias.path(@path)

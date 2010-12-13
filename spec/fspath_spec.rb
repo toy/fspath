@@ -247,6 +247,38 @@ describe FSPath do
         end
       end
 
+      describe "spotlight comments" do
+        describe "getting" do
+          it "should call comment.get on mac_finder_alias" do
+            @path = FSPath(__FILE__)
+            @finder_alias = mock(:finder_alias)
+            @comment = mock(:comment)
+            @comment_text = mock(:comment_text)
+
+            @path.should_receive(:mac_finder_alias).and_return(@finder_alias)
+            @finder_alias.should_receive(:comment).and_return(@comment)
+            @comment.should_receive(:get).and_return(@comment_text)
+
+            @path.spotlight_comment.should == @comment_text
+          end
+        end
+
+        describe "setting" do
+          it "should call comment.set on mac_finder_alias" do
+            @path = FSPath(__FILE__)
+            @finder_alias = mock(:finder_alias)
+            @comment = mock(:comment)
+            @comment_text = mock(:comment_text)
+
+            @path.should_receive(:mac_finder_alias).and_return(@finder_alias)
+            @finder_alias.should_receive(:comment).and_return(@comment)
+            @comment.should_receive(:set).with(@comment_text.to_s)
+
+            @path.spotlight_comment = @comment_text
+          end
+        end
+      end
+
       describe "appscript objects" do
         before do
           @file_path = File.expand_path(__FILE__)
