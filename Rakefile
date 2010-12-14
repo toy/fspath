@@ -15,6 +15,7 @@ name = 'fspath'
     gem.license = 'MIT'
     gem.authors = ['Boba Fat']
     gem.platform = platform
+    gem.add_dependency 'xattr'
     if platform == 'darwin'
       gem.add_dependency 'rb-appscript'
     end

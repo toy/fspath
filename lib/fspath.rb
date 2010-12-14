@@ -87,6 +87,7 @@ module Kernel
   private :Pathname
 end
 
+require 'fspath/xattr'
 if RUBY_PLATFORM.downcase.include?('darwin')
   require 'fspath/darwin'
 end
