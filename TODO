@@ -1,0 +1,40 @@
+class Pathname
+  def non_existing
+    dir = dirname
+    ext = extname
+    name = basename(ext)
+    postfix = nil
+    while (path = dir + "#{name}#{postfix}#{ext}").exist?
+      postfix = postfix ? postfix.succ : '-a'
+    end
+    path
+    # begin
+    #   FSPath('abc').open(Fcntl::O_WRONLY | Fcntl::O_CREAT | Fcntl::O_EXCL) do |f|
+    #   end
+    # rescue => e
+    #   p e
+    # end
+
+  end
+
+  def lock(options = {}, &block)
+    File.lock(@path, options, &block)
+    # class File
+    #   def self.lock(path, options = {})
+    #     if lock = File.open(path, options[:mode] || 'r')
+    #       begin
+    #         if lock.flock(options[:no_block] ? (File::LOCK_EX | File::LOCK_NB) : (File::LOCK_EX))
+    #           yield
+    #         end
+    #       ensure
+    #         lock.flock(File::LOCK_UN)
+    #         lock.close
+    #       end
+    #     end
+    #   end
+    # end
+    # Fcntl::O_RDONLY | Fcntl::O_CREAT
+    # Fcntl::O_SHLOCK
+    # Fcntl::O_EXLOCK
+  end
+end
