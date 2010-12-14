@@ -1,8 +1,8 @@
-= fspath
+# fspath
 
 Better than Pathname
 
-== Synopsis
+## Synopsis
 
 User dir:
 
@@ -48,7 +48,7 @@ Path parts:
 
     FSPath('/a/b/c').parts # => ['/', 'a', 'b', 'c']
 
-=== Extended attributes (using xattr gem)
+### Extended attributes (using xattr gem)
 
 Get extended attribute:
 
@@ -58,7 +58,7 @@ Set extended attribute:
 
     FSPath('/a/b/c').xattr['good'] = 'bad'
 
-=== OS X stuff
+### OS X stuff
 
 Move to trash:
 
@@ -80,6 +80,6 @@ Set spotlight comment:
 
     FSPath('a').spotlight_comment = 'a file'
 
-== Copyright
+## Copyright
 
 Copyright (c) 2010 Boba Fat. See LICENSE.txt for further details.
