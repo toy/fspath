@@ -7,6 +7,13 @@ class FSPath < Pathname
     def ~(name = nil)
       new(File.expand_path("~#{name}"))
     end
+
+    # Returns common dir for paths
+    def common_dir(*paths)
+      paths.map do |path|
+        new(path).dirname.ascend
+      end.inject(:&).first
+    end
   end
 
   # Join paths using File.join

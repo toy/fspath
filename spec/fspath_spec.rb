@@ -19,6 +19,20 @@ describe FSPath do
     end
   end
 
+  describe "common_dir" do
+    it "should return dirname if called with one path" do
+      FSPath.common_dir('/a/b/c').should == FSPath('/a/b')
+    end
+
+    it "should return common path if called with mulpitle paths" do
+      FSPath.common_dir('/a/b/c/d/e', '/a/b/c/d/f', '/a/b/c/z').should == FSPath('/a/b/c')
+    end
+
+    it "should return nil if there is no common path" do
+      FSPath.common_dir('../a', './b').should be_nil
+    end
+  end
+
   describe "/" do
     it "should join path with string" do
       (FSPath('a') / 'b').should == FSPath('a/b')
