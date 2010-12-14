@@ -89,9 +89,11 @@ class FSPath < Pathname
 
       FINDER_LABEL_COLORS = [:none, :orange, :red, :yellow, :blue, :purple, :green, :gray].freeze
       FINDER_LABEL_COLOR_ALIASES = {:grey => :gray}.freeze
+      # Get finder label (one of :none, :orange, :red, :yellow, :blue, :purple, :green and :gray)
       def finder_label
         FINDER_LABEL_COLORS[mac_finder_alias.label_index.get]
       end
+      # Set finder label (:grey is same as :gray, nil or false as :none)
       def finder_label=(color)
         color = FINDER_LABEL_COLOR_ALIASES[color] || color || :none
         index = FINDER_LABEL_COLORS.index(color)
@@ -99,10 +101,12 @@ class FSPath < Pathname
         mac_finder_alias.label_index.set(index)
       end
 
+      # Get spotlight comment
       def spotlight_comment
         mac_finder_alias.comment.get
       end
 
+      # Set spotlight comment
       def spotlight_comment=(comment)
         mac_finder_alias.comment.set(comment.to_s)
       end
