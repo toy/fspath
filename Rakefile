@@ -13,7 +13,7 @@ name = 'fspath'
     gem.summary = %Q{Better than Pathname}
     gem.homepage = "http://github.com/toy/#{name}"
     gem.license = 'MIT'
-    gem.authors = ['Boba Fat']
+    gem.authors = ['Ivan Kuchin']
     gem.platform = platform
     gem.add_dependency 'xattr'
     if platform == 'darwin'
