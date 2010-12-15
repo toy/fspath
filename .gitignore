@@ -1,6 +1,11 @@
-/pkg
-/.bundle
-/coverage
-/.yardoc
-/doc
-/sources
+/pkg/
+
+/doc/
+/rdoc/
+/.yardoc/
+/coverage/
+
+Makefile
+*.o
+*.bundle
+/tmp/
