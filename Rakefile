@@ -1,7 +1,6 @@
 require 'rake'
 require 'jeweler'
 require 'rake/gem_ghost_task'
-require 'rspec/core'
 require 'rspec/core/rake_task'
 
 name = 'fspath'
