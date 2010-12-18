@@ -23,8 +23,8 @@ class FSPath < Pathname
 
   unless (new('a') + 'b').is_a?(self)
     # Fixing Pathname.+
-    def +(part)
-      self.class.new(super + part)
+    def +(other)
+      self.class.new(plus(@path, other.to_s))
     end
   end
 

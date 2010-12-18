@@ -51,6 +51,14 @@ describe FSPath do
     it "should return instance of FSPath" do
       (FSPath('a') + 'b').should be_instance_of(FSPath)
     end
+
+    it "should join simple paths" do
+      (FSPath('a') + 'b').should == FSPath('a/b')
+    end
+
+    it "should join path starting with slash" do
+      (FSPath('a') + '/b').should == FSPath('/b')
+    end
   end
 
   describe "writing" do
