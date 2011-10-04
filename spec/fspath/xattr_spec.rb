@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'fspath/xattr'
 
 describe Xattr do
   describe "new" do

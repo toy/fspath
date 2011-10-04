@@ -1,3 +1,4 @@
+require 'fspath'
 require 'xattr'
 
 Xattr.class_eval do

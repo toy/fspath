@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'fspath/darwin'
 
 describe FSPath do
   if RUBY_PLATFORM.downcase.include?('darwin')

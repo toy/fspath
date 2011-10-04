@@ -1,3 +1,4 @@
+require 'fspath'
 require 'appscript'
 
 class FSPath < Pathname
