@@ -4,13 +4,12 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{fspath}
-  s.version = "0.1.2"
-  s.platform = %q{darwin}
+  s.name = "fspath"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ivan Kuchin"]
-  s.date = %q{2010-12-18}
+  s.date = "2011-10-04"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.markdown",
@@ -25,6 +24,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "fspath.gemspec",
     "lib/fspath.rb",
+    "lib/fspath/all.rb",
     "lib/fspath/darwin.rb",
     "lib/fspath/xattr.rb",
     "spec/fspath/darwin_spec.rb",
@@ -32,38 +32,28 @@ Gem::Specification.new do |s|
     "spec/fspath_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/toy/fspath}
+  s.homepage = "http://github.com/toy/fspath"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Better than Pathname}
-  s.test_files = [
-    "spec/fspath/darwin_spec.rb",
-    "spec/fspath/xattr_spec.rb",
-    "spec/fspath_spec.rb",
-    "spec/spec_helper.rb"
-  ]
+  s.rubygems_version = "1.8.10"
+  s.summary = "Better than Pathname"
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<xattr>, [">= 0"])
-      s.add_runtime_dependency(%q<rb-appscript>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.1"])
       s.add_development_dependency(%q<rake-gem-ghost>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
     else
       s.add_dependency(%q<xattr>, [">= 0"])
-      s.add_dependency(%q<rb-appscript>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
       s.add_dependency(%q<rake-gem-ghost>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
     end
   else
     s.add_dependency(%q<xattr>, [">= 0"])
-    s.add_dependency(%q<rb-appscript>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
     s.add_dependency(%q<rake-gem-ghost>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
