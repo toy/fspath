@@ -62,6 +62,16 @@ describe FSPath do
     end
   end
 
+  describe "relative_path_from" do
+    it "should return instance of FSPath" do
+      (FSPath('a').relative_path_from('b')).should be_instance_of(FSPath)
+    end
+
+    it "should return relative path" do
+      (FSPath('b/a').relative_path_from('b')).should == FSPath('a')
+    end
+  end
+
   describe "writing" do
     before do
       @path = FSPath.new('test')

@@ -28,6 +28,11 @@ class FSPath < Pathname
     end
   end
 
+  # Fixing Pathname.relative_path_from
+  def relative_path_from(other)
+    self.class.new(super(self.class.new(other)))
+  end
+
   # Write data to file
   def write(data)
     open('wb') do |f|
