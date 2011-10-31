@@ -54,6 +54,28 @@ describe FSPath do
     end
   end
 
+  describe "temp_file_path" do
+    before do
+      @path = mock(:path)
+      @file = mock(:file)
+      @file.stub!(:path).and_return(@path)
+    end
+
+    it "should return FSPath with temporary path" do
+      FSPath::Tempfile.stub!(:new).and_return(@file)
+
+      FSPath.temp_file_path.should == @path
+    end
+
+    it "should yield FSPath with temporary path" do
+      FSPath::Tempfile.stub!(:open).and_yield(@file)
+
+      yielded = nil
+      FSPath.temp_file_path{ |y| yielded = y }
+      yielded.should == @path
+    end
+  end
+
   describe "temp_dir" do
     it "should return result of running Dir.mktmpdir as FSPath instance" do
       @path = '/tmp/a/b/1'

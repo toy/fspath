@@ -29,6 +29,17 @@ class FSPath < Pathname
       Tempfile.open(*args, &block)
     end
 
+    # Returns or yields path as FSPath of temp file created by Tempfile.new
+    def temp_file_path(*args)
+      if block_given?
+        temp_file(*args) do |file|
+          yield file.path
+        end
+      else
+        temp_file(*args).path
+      end
+    end
+
     # Returns or yields FSPath with temp directory created by Dir.mktmpdir
     def temp_dir(*args)
       if block_given?
