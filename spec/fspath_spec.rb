@@ -34,6 +34,24 @@ describe FSPath do
     end
   end
 
+  describe "temp_dir" do
+    it "should return result of running Dir.mktmpdir as FSPath instance" do
+      @path = '/tmp/a/b/1'
+      Dir.stub!(:mktmpdir).and_return(@path)
+
+      FSPath.temp_dir.should == FSPath('/tmp/a/b/1')
+    end
+
+    it "should yield path yielded by Dir.mktmpdir as FSPath instance" do
+      @path = '/tmp/a/b/2'
+      Dir.stub!(:mktmpdir).and_yield(@path)
+
+      yielded = nil
+      FSPath.temp_dir{ |y| yielded = y }
+      yielded.should == FSPath('/tmp/a/b/2')
+    end
+  end
+
   describe "/" do
     it "should join path with string" do
       (FSPath('a') / 'b').should == FSPath('a/b')

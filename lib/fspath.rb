@@ -1,4 +1,6 @@
 require 'pathname'
+require 'tempfile'
+require 'tmpdir'
 
 class FSPath < Pathname
   class << self
@@ -13,6 +15,17 @@ class FSPath < Pathname
       paths.map do |path|
         new(path).dirname.ascend
       end.inject(:&).first
+    end
+
+    # Returns or yields FSPath with temp directory created by Dir.mktmpdir
+    def temp_dir(*args)
+      if block_given?
+        Dir.mktmpdir(*args) do |dir|
+          yield new(dir)
+        end
+      else
+        new(Dir.mktmpdir(*args))
+      end
     end
   end
 
