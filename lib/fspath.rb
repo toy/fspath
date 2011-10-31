@@ -3,6 +3,12 @@ require 'tempfile'
 require 'tmpdir'
 
 class FSPath < Pathname
+  class Tempfile < ::Tempfile
+    def path
+      FSPath.new(super)
+    end
+  end
+
   class << self
     # Return current user home path if called without argument.
     # If called with argument return specified user home path.
@@ -15,6 +21,12 @@ class FSPath < Pathname
       paths.map do |path|
         new(path).dirname.ascend
       end.inject(:&).first
+    end
+
+    # Returns or yields temp file created by Tempfile.new with path returning FSPath
+    def temp_file(*args, &block)
+      args = %w[f] if args.empty?
+      Tempfile.open(*args, &block)
     end
 
     # Returns or yields FSPath with temp directory created by Dir.mktmpdir
