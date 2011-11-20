@@ -2,6 +2,8 @@
 
 Better than Pathname
 
+Check out fspath-mac and fspath-xattr.
+
 ## Synopsis
 
 User dir:
@@ -47,38 +49,6 @@ Descendants:
 Path parts:
 
     FSPath('/a/b/c').parts # => ['/', 'a', 'b', 'c']
-
-### Extended attributes (using xattr gem)
-
-Get extended attribute:
-
-    FSPath('/a/b/c').xattr['com.macromates.caret']
-
-Set extended attribute:
-
-    FSPath('/a/b/c').xattr['good'] = 'bad'
-
-### OS X stuff
-
-Move to trash:
-
-    FSPath('a').move_to_trash
-
-Get finder label (one of :none, :orange, :red, :yellow, :blue, :purple, :green and :gray):
-
-    FSPath('a').finder_label
-
-Set finder label (:grey is same as :gray, nil or false as :none):
-
-    FSPath('a').finder_label = :red
-
-Get spotlight comment:
-
-    FSPath('a').spotlight_comment
-
-Set spotlight comment:
-
-    FSPath('a').spotlight_comment = 'a file'
 
 ## Copyright
 
