@@ -13,7 +13,7 @@ name = 'fspath'
     gem.license = 'MIT'
     gem.authors = ['Ivan Kuchin']
     gem.platform = platform
-    gem.add_dependency 'xattr'
+    gem.add_dependency 'ffi-xattr'
     if platform == 'darwin'
       gem.add_dependency 'rb-appscript'
     end

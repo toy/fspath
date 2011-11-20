@@ -1,58 +1,54 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'fspath/xattr'
 
-describe Xattr do
-  describe "new" do
-    it "should accept follow_symlinks as second attribute" do
-      Xattr.new('a', true).follow_symlinks.should == true
-      Xattr.new('a', false).follow_symlinks.should == false
-    end
-
-    it "should alias get/set as []" do
-      Xattr.instance_method(:[]).should == Xattr.instance_method(:get)
-      Xattr.instance_method(:[]=).should == Xattr.instance_method(:set)
-    end
-  end
-end
-
 describe FSPath do
+  let(:path){ 'test.txt' }
+  let(:link){ 'link.txt' }
+
   before do
-    @file_path = 'with_xattr'
+    File.open(path, 'w'){ |io| io << 'some content' }
+    File.symlink(path, link)
+  end
+  after do
+    File.delete(path)
+    File.delete(link)
   end
 
   describe "xattr" do
-    before do
-      @xattr = FSPath(@file_path).xattr
-    end
+    let(:xattr){ FSPath(link).xattr }
 
     it "should return instance of Xattr" do
-      @xattr.should be_kind_of(Xattr)
-    end
-
-    it "should follow_symlinks" do
-      @xattr.follow_symlinks.should be_true
+      xattr.should be_kind_of(Xattr)
     end
 
     it "should point to same path" do
-      @xattr.instance_variable_get(:@path).should == @file_path
+      xattr.instance_variable_get(:@path).should == link
+    end
+
+    it "should set xattr on linked path" do
+      FSPath(path).xattr['user.hello'].should be_nil
+      xattr['user.hello'] = 'foo'
+      xattr['user.hello'].should == 'foo'
+      FSPath(path).xattr['user.hello'].should == 'foo'
     end
   end
 
   describe "lxattr" do
-    before do
-      @lxattr = FSPath(@file_path).lxattr
-    end
+    let(:xattr){ FSPath(link).lxattr }
 
     it "should return instance of Xattr" do
-      @lxattr.should be_kind_of(Xattr)
-    end
-
-    it "should not follow_symlinks" do
-      @lxattr.follow_symlinks.should be_false
+      xattr.should be_kind_of(Xattr)
     end
 
     it "should point to same path" do
-      @lxattr.instance_variable_get(:@path).should == @file_path
+      xattr.instance_variable_get(:@path).should == link
+    end
+
+    it "should set xattr on link itself" do
+      FSPath(path).xattr['user.hello'].should be_nil
+      xattr['user.hello'] = 'foo'
+      xattr['user.hello'].should == 'foo'
+      FSPath(path).xattr['user.hello'].should be_nil
     end
   end
 end
