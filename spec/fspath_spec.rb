@@ -2,6 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'fspath'
 
 describe FSPath do
+  class ZPath < FSPath
+  end
+
   it "should inherit from Pathname" do
     FSPath.new('.').should be_kind_of(Pathname)
   end
@@ -34,45 +37,31 @@ describe FSPath do
     end
   end
 
-  describe "temp_file" do
-    before do
-      @file = mock(:file)
+  [FSPath, ZPath].each do |klass|
+    describe "#{klass}.temp_file" do
+      it "should return Tempfile with path returning instance of #{klass}" do
+        klass.temp_file.should be_kind_of(Tempfile)
+        klass.temp_file.path.should be_kind_of(klass)
+      end
+
+      it "should yield Tempfile with path returning instance of #{klass}" do
+        yielded = nil
+        klass.temp_file{ |y| yielded = y }
+        yielded.should be_kind_of(Tempfile)
+        yielded.path.should be_kind_of(klass)
+      end
     end
 
-    it "should return instance of FSPath::Tempfile" do
-      FSPath::Tempfile.stub!(:open).and_return(@file)
+    describe "#{klass}.temp_file_path" do
+      it "should return #{klass} with temporary path" do
+        klass.temp_file_path.should be_kind_of(klass)
+      end
 
-      FSPath.temp_file.should == @file
-    end
-
-    it "should yield instance of FSPath::Tempfile" do
-      FSPath::Tempfile.stub!(:open).and_yield(@file)
-
-      yielded = nil
-      FSPath.temp_file{ |y| yielded = y }
-      yielded.should == @file
-    end
-  end
-
-  describe "temp_file_path" do
-    before do
-      @path = mock(:path)
-      @file = mock(:file)
-      @file.stub!(:path).and_return(@path)
-    end
-
-    it "should return FSPath with temporary path" do
-      FSPath::Tempfile.stub!(:new).and_return(@file)
-
-      FSPath.temp_file_path.should == @path
-    end
-
-    it "should yield FSPath with temporary path" do
-      FSPath::Tempfile.stub!(:open).and_yield(@file)
-
-      yielded = nil
-      FSPath.temp_file_path{ |y| yielded = y }
-      yielded.should == @path
+      it "should yield #{klass} with temporary path" do
+        yielded = nil
+        klass.temp_file_path{ |y| yielded = y }
+        yielded.should be_kind_of(klass)
+      end
     end
   end
 

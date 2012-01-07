@@ -4,8 +4,14 @@ require 'tmpdir'
 
 class FSPath < Pathname
   class Tempfile < ::Tempfile
+    def initialize(path_klass, *args)
+      raise ArgumentError.new("#{path_klass.inspect} is not a class") unless path_klass.is_a?(Class)
+      @path_klass = path_klass
+      super(*args)
+    end
+
     def path
-      FSPath.new(super)
+      @path_klass.new(super)
     end
   end
 
@@ -26,7 +32,7 @@ class FSPath < Pathname
     # Returns or yields temp file created by Tempfile.new with path returning FSPath
     def temp_file(*args, &block)
       args = %w[f] if args.empty?
-      Tempfile.open(*args, &block)
+      Tempfile.open(self, *args, &block)
     end
 
     # Returns or yields path as FSPath of temp file created by Tempfile.new
