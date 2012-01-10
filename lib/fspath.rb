@@ -44,6 +44,7 @@ class FSPath < Pathname
         end
       else
         file = temp_file(*args)
+        file.close
         path = file.path
         path.instance_variable_set(:@__temp_file, file)
         path

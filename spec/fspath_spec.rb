@@ -58,7 +58,7 @@ describe FSPath do
       end
 
       it "should not allow GC to finalize TempFile" do
-        paths = Array.new(100){ FSPath.temp_file_path }
+        paths = Array.new(1000){ FSPath.temp_file_path }
         paths.should be_all(&:exist?)
         GC.start
         paths.should be_all(&:exist?)
