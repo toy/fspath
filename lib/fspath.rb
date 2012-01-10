@@ -36,13 +36,17 @@ class FSPath < Pathname
     end
 
     # Returns or yields path as FSPath of temp file created by Tempfile.new
+    # WARNING: loosing reference to returned object will remove file on nearest GC run
     def temp_file_path(*args)
       if block_given?
         temp_file(*args) do |file|
           yield file.path
         end
       else
-        temp_file(*args).path
+        file = temp_file(*args)
+        path = file.path
+        path.instance_variable_set(:@__temp_file, file)
+        path
       end
     end
 

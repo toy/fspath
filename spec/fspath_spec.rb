@@ -57,6 +57,13 @@ describe FSPath do
         klass.temp_file_path.should be_kind_of(klass)
       end
 
+      it "should not allow GC to finalize TempFile" do
+        paths = Array.new(100){ FSPath.temp_file_path }
+        paths.should be_all(&:exist?)
+        GC.start
+        paths.should be_all(&:exist?)
+      end
+
       it "should yield #{klass} with temporary path" do
         yielded = nil
         klass.temp_file_path{ |y| yielded = y }
