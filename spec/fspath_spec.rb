@@ -189,6 +189,11 @@ describe FSPath do
       FSPath.should_receive(:glob).with('a/b/c/**/*', @flags)
       FSPath('a/b/c').glob('**', '*', @flags)
     end
+
+    it "should escape glob characters in path itself" do
+      FSPath.should_receive(:glob).with('somewhere \[a b c\]/**/*')
+      FSPath('somewhere [a b c]').glob('**', '*')
+    end
   end
 
   describe "path parts" do

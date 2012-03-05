@@ -96,13 +96,13 @@ class FSPath < Pathname
 
   # Escape characters in glob pattern
   def escape_glob
-    self.class.new(@path.gsub(/([\*\?\[\]\{\}])/, '\\\\\1'))
+    self.class.new(escape_glob_string)
   end
 
   # Expand glob
   def glob(*args, &block)
     flags = args.last.is_a?(Fixnum) ? args.pop : nil
-    args = [File.join(self, *args)]
+    args = [File.join(escape_glob_string, *args)]
     args << flags if flags
     self.class.glob(*args, &block)
   end
@@ -135,6 +135,12 @@ class FSPath < Pathname
   # Returns path parts
   def parts(&block)
     split_names(@path).flatten
+  end
+
+private
+
+  def escape_glob_string
+    @path.gsub(/([\*\?\[\]\{\}])/, '\\\\\1')
   end
 end
 
