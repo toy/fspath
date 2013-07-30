@@ -76,14 +76,14 @@ describe FSPath do
   describe "temp_dir" do
     it "should return result of running Dir.mktmpdir as FSPath instance" do
       @path = '/tmp/a/b/1'
-      Dir.stub!(:mktmpdir).and_return(@path)
+      Dir.stub(:mktmpdir).and_return(@path)
 
       FSPath.temp_dir.should == FSPath('/tmp/a/b/1')
     end
 
     it "should yield path yielded by Dir.mktmpdir as FSPath instance" do
       @path = '/tmp/a/b/2'
-      Dir.stub!(:mktmpdir).and_yield(@path)
+      Dir.stub(:mktmpdir).and_yield(@path)
 
       yielded = nil
       FSPath.temp_dir{ |y| yielded = y }
@@ -132,12 +132,12 @@ describe FSPath do
   describe "writing" do
     before do
       @path = FSPath.new('test')
-      @file = mock(:file)
-      @data = mock(:data)
-      @size = mock(:size)
+      @file = double(:file)
+      @data = double(:data)
+      @size = double(:size)
 
-      @path.stub!(:open).and_yield(@file)
-      @file.stub!(:write).and_return(@size)
+      @path.stub(:open).and_yield(@file)
+      @file.stub(:write).and_return(@size)
     end
 
     describe "write" do
