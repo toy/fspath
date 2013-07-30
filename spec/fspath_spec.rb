@@ -51,6 +51,12 @@ describe FSPath do
         yielded.should be_kind_of(Tempfile)
         yielded.path.should be_kind_of(klass)
       end
+
+      it "should call appropriate initializer (jruby 1.8 mode bug)" do
+        lambda {
+          klass.temp_file('abc', '.'){}
+        }.should_not raise_error
+      end
     end
 
     describe "#{klass}.temp_file_path" do
