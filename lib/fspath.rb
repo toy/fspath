@@ -13,6 +13,22 @@ class FSPath < Pathname
     def path
       @path_klass.new(super)
     end
+
+    def self.open(*args)
+      tempfile = new(*args)
+
+      if block_given?
+        begin
+          yield(tempfile)
+        ensure
+          tempfile.close
+        end
+
+        nil
+      else
+        tempfile
+      end
+    end
   end
 
   class << self
