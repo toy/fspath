@@ -4,6 +4,8 @@ Better than Pathname
 
 Check out [fspath-mac](https://rubygems.org/gems/fspath-mac) and [fspath-xattr](https://rubygems.org/gems/fspath-xattr).
 
+[![Build Status](https://travis-ci.org/toy/fspath.png?branch=master)](https://travis-ci.org/toy/fspath)
+
 ## Synopsis
 
 User dir:
