@@ -23,8 +23,6 @@ class FSPath < Pathname
         ensure
           tempfile.close
         end
-
-        nil
       else
         tempfile
       end

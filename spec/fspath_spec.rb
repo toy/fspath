@@ -52,6 +52,10 @@ describe FSPath do
         yielded.path.should be_kind_of(klass)
       end
 
+      it "should return result of block" do
+        klass.temp_file{ :result }.should == :result
+      end
+
       it "should call appropriate initializer (jruby 1.8 mode bug)" do
         lambda {
           klass.temp_file('abc', '.'){}
