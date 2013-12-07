@@ -39,7 +39,7 @@ class FSPath < Pathname
     # Returns common dir for paths
     def common_dir(*paths)
       paths.map do |path|
-        new(path).dirname.ascend
+        new(path).dirname.ascendants
       end.inject(:&).first
     end
 
@@ -121,29 +121,36 @@ class FSPath < Pathname
     self.class.glob(*args, &block)
   end
 
-  # Iterates over and yields each element in the given path in ascending order
-  def ascend(&block)
-    ascendants = []
+  # Returns list of elements in the given path in ascending order
+  def ascendants
+    paths = []
     path = @path
-    ascendants << self
+    paths << self
     while r = chop_basename(path)
       path, name = r
       break if path.empty?
-      ascendants << self.class.new(del_trailing_separator(path))
+      paths << self.class.new(del_trailing_separator(path))
     end
-    if block
-      ascendants.each(&block)
-    end
-    ascendants
+    paths
+  end
+
+  # Returns list of elements in the given path in descending order
+  def descendants
+    ascendants.reverse
+  end
+
+  # Iterates over and yields each element in the given path in ascending order
+  def ascend(&block)
+    paths = ascendants
+    paths.each(&block) if block
+    paths
   end
 
   # Iterates over and yields each element in the given path in descending order
   def descend(&block)
-    descendants = ascend.reverse
-    if block
-      descendants.each(&block)
-    end
-    descendants
+    paths = descendants
+    paths.each(&block) if block
+    paths
   end
 
   # Returns path parts

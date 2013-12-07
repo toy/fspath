@@ -208,41 +208,57 @@ describe FSPath do
   end
 
   describe "path parts" do
-    describe "ascend" do
+    describe "ascending" do
       before do
         @path = FSPath('/a/b/c')
         @ascendants = %w[/a/b/c /a/b /a /].map(&method(:FSPath))
       end
 
-      it "should return list of ascendants" do
-        @path.ascend.should == @ascendants
+      describe "ascendants" do
+        it "should return list of ascendants" do
+          @path.ascendants.should == @ascendants
+        end
       end
 
-      it "should yield and return list of ascendants if called with block" do
-        ascendants = []
-        @path.ascend do |path|
-          ascendants << path
-        end.should == @ascendants
-        ascendants.should == @ascendants
+      describe "ascend" do
+        it "should return list of ascendants" do
+          @path.ascend.should == @ascendants
+        end
+
+        it "should yield and return list of ascendants if called with block" do
+          ascendants = []
+          @path.ascend do |path|
+            ascendants << path
+          end.should == @ascendants
+          ascendants.should == @ascendants
+        end
       end
     end
 
-    describe "descend" do
+    describe "descending" do
       before do
         @path = FSPath('/a/b/c')
         @descendants = %w[/ /a /a/b /a/b/c].map(&method(:FSPath))
       end
 
-      it "should return list of descendants" do
-        @path.descend.should == @descendants
+      describe "descendants" do
+        it "should return list of descendants" do
+          @path.descendants.should == @descendants
+        end
       end
 
-      it "should yield and return list of descendants if called with block" do
-        descendants = []
-        @path.descend do |path|
-          descendants << path
-        end.should == @descendants
-        descendants.should == @descendants
+      describe "descend" do
+        it "should return list of descendants" do
+          @path.descend.should == @descendants
+        end
+
+        it "should yield and return list of descendants if called with block" do
+          descendants = []
+          @path.descend do |path|
+            descendants << path
+          end.should == @descendants
+          descendants.should == @descendants
+        end
       end
     end
 

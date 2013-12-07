@@ -42,10 +42,12 @@ Expand glob:
 
 Ascendants:
 
+    FSPath('a/b/c').ascendants
     FSPath('a/b/c').ascend # => [FSPath('a/b/c'), FSPath('a/b'), FSPath('a')]
 
 Descendants:
 
+    FSPath('a/b/c').descendants
     FSPath('a/b/c').descend # => [FSPath('a'), FSPath('a/b'), FSPath('a/b/c')]
 
 Path parts:
