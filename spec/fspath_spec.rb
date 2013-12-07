@@ -268,4 +268,128 @@ describe FSPath do
       end
     end
   end
+
+  describe "returning/yield instances of FSPath" do
+    def fspath?(path)
+      path.should be_instance_of(FSPath)
+    end
+
+    def fspaths?(paths)
+      paths.each do |path|
+        fspath? path
+      end
+    end
+
+    it "should for glob" do
+      fspaths? FSPath(__FILE__).glob
+
+      FSPath(__FILE__).glob do |path|
+        fspath? path
+      end
+    end
+
+    it "should for pwd" do
+      fspath? FSPath.pwd
+    end
+
+    it "should for getwd" do
+      fspath? FSPath.getwd
+    end
+
+    it "should for basename" do
+      fspath? FSPath('a/b').basename
+    end
+
+    it "should for dirname" do
+      fspath? FSPath('a/b').dirname
+    end
+
+    it "should for parent" do
+      fspath? FSPath('a/b').parent
+    end
+
+    it "should for cleanpath" do
+      fspath? FSPath('a/b').cleanpath
+    end
+
+    it "should for expand_path" do
+      fspath? FSPath('a/b').expand_path
+    end
+
+    it "should for relative_path_from" do
+      fspath? FSPath('a').relative_path_from('b')
+    end
+
+    it "should for join" do
+      fspath? FSPath('a').join('b', 'c')
+    end
+
+    it "should for split" do
+      fspaths? FSPath('a/b').split
+    end
+
+    it "should for sub" do
+      fspath? FSPath('a/b').sub('a', 'c')
+      fspath? FSPath('a/b').sub('a'){ 'c' }
+    end
+
+    it "should for sub_ext" do
+      fspath? FSPath('a/b').sub_ext('.rb')
+    end if FSPath.method_defined?(:sub_ext)
+
+    it "should for readlink" do
+      FSPath.temp_dir do |dir|
+        symlink = dir + 'sym'
+        symlink.make_symlink __FILE__
+        fspath? symlink.readlink
+      end
+    end
+
+    it "should for realdirpath" do
+      fspath? FSPath(__FILE__).realdirpath
+    end if FSPath.method_defined?(:realdirpath)
+
+    it "should for realpath" do
+      fspath? FSPath(__FILE__).realpath
+    end
+
+    it "should for children" do
+      fspaths? FSPath('.').children
+    end
+
+    it "should for dir_foreach" do
+      dir = FSPath('.')
+      dir.stub(:warn)
+      dir.dir_foreach do |entry|
+        fspath? entry
+      end
+    end if FSPath.method_defined?(:dir_foreach)
+
+    it "should for each_child" do
+      fspaths? FSPath('.').each_child
+      fspaths? FSPath('.').each_child do |child|
+        fspath? child
+      end
+    end if FSPath.method_defined?(:each_child)
+
+    it "should for each_entry" do
+      FSPath('.').each_entry do |entry|
+        fspath? entry
+      end
+    end
+
+    it "should for entries" do
+      fspaths? FSPath('.').entries
+    end
+
+    it "should for find" do
+      FSPath('.').find do |path|
+        fspath? path
+      end
+    end
+
+    it "should for inspect" do
+      FSPath('a').inspect.should include('FSPath')
+    end
+  end
 end
