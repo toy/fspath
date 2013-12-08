@@ -158,6 +158,13 @@ class FSPath < Pathname
     split_names(@path).flatten
   end
 
+  unless new('a').inspect.include?('FSPath')
+    # Fixing inspect
+    def inspect
+      "#<#{self.class}:#{@path}>"
+    end
+  end
+
 private
 
   def escape_glob_string
