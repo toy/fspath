@@ -154,7 +154,7 @@ class FSPath < Pathname
   end
 
   # Returns path parts
-  def parts(&block)
+  def parts
     split_names(@path).flatten
   end
 
