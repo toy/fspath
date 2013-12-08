@@ -158,6 +158,86 @@ class FSPath < Pathname
     split_names(@path).flatten
   end
 
+  unless new('a').basename.is_a?(self)
+    # Fixing glob
+    def self.glob(*args)
+      if block_given?
+        super{ |f| yield new(f) }
+      else
+        super.map{ |f| new(f) }
+      end
+    end
+
+    # Fixing getwd
+    def self.getwd
+      new(super)
+    end
+
+    # Fixing pwd
+    def self.pwd
+      new(super)
+    end
+
+    # Fixing basename
+    def basename(*args)
+      self.class.new(super)
+    end
+
+    # Fixing dirname
+    def dirname
+      self.class.new(super)
+    end
+
+    # Fixing expand_path
+    def expand_path(*args)
+      self.class.new(super)
+    end
+
+    # Fixing split
+    def split
+      super.map{ |f| self.class.new(f) }
+    end
+
+    # Fixing sub
+    def sub(pattern, *rest, &block)
+      self.class.new(super)
+    end
+
+    if Pathname.method_defined?(:sub_ext)
+      # Fixing sub_ext
+      def sub_ext(ext)
+        self.class.new(super)
+      end
+    end
+
+    # Fixing realpath
+    def realpath
+      self.class.new(super)
+    end
+
+    if Pathname.method_defined?(:realdirpath)
+      # Fixing realdirpath
+      def realdirpath
+        self.class.new(super)
+      end
+    end
+
+    # Fixing readlink
+    def readlink
+      self.class.new(super)
+    end
+
+    # Fixing each_entry
+    def each_entry
+      super{ |f| yield self.class.new(f) }
+    end
+
+    # Fixing entries
+    def entries
+      super.map{ |f| self.class.new(f) }
+    end
+  end
+
   unless new('a').inspect.include?('FSPath')
     # Fixing inspect
     def inspect
