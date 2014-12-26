@@ -2,18 +2,26 @@ require 'pathname'
 require 'tempfile'
 require 'tmpdir'
 
+# Extension of Pathname with helpful methods and fixes
 class FSPath < Pathname
+  # Extension of Tempfile returning instance of provided class for path
   class Tempfile < ::Tempfile
+    # Eats first argument which must be a class, and calls super
     def initialize(path_klass, *args)
-      raise ArgumentError.new("#{path_klass.inspect} is not a class") unless path_klass.is_a?(Class)
+      unless path_klass.is_a?(Class)
+        fail ArgumentError, "#{path_klass.inspect} is not a class"
+      end
       @path_klass = path_klass
       super(*args)
     end
 
+    # Returns path wrapped in class provided in initialize
     def path
       @path_klass.new(super)
     end
 
+    # Fixes using appropriate initializer for jruby in 1.8 mode, also returns
+    # result of block in ruby 1.8
     def self.open(*args)
       tempfile = new(*args)
 
@@ -43,14 +51,16 @@ class FSPath < Pathname
       end.inject(:&).first
     end
 
-    # Returns or yields temp file created by Tempfile.new with path returning FSPath
+    # Returns or yields temp file created by Tempfile.new with path returning
+    # FSPath
     def temp_file(*args, &block)
       args = %w[f] if args.empty?
       Tempfile.open(self, *args, &block)
     end
 
     # Returns or yields path as FSPath of temp file created by Tempfile.new
-    # WARNING: loosing reference to returned object will remove file on nearest GC run
+    # WARNING: loosing reference to returned object will remove file on nearest
+    # GC run
     def temp_file_path(*args)
       if block_given?
         temp_file(*args) do |file|
@@ -126,8 +136,8 @@ class FSPath < Pathname
     paths = []
     path = @path
     paths << self
-    while r = chop_basename(path)
-      path, name = r
+    while (r = chop_basename(path))
+      path = r.first
       break if path.empty?
       paths << self.class.new(del_trailing_separator(path))
     end
@@ -158,7 +168,7 @@ class FSPath < Pathname
     split_names(@path).flatten
   end
 
-  unless new('a').basename.is_a?(self)
+  unless pwd.is_a?(self)
     # Fixing glob
     def self.glob(*args)
       if block_given?
@@ -252,10 +262,11 @@ private
   end
 end
 
+# Add FSPath method as alias to FSPath.new
 module Kernel
   # FSPath(path) method
-  def FSPath(path)
+  define_method :FSPath do |path|
     FSPath.new(path)
   end
-  private :Pathname
+  private :FSPath
 end

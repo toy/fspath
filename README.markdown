@@ -1,10 +1,14 @@
+[![Gem Version](https://img.shields.io/gem/v/fspath.svg?style=flat)](https://rubygems.org/gems/fspath)
+[![Build Status](https://img.shields.io/travis/toy/fspath/master.svg?style=flat)](https://travis-ci.org/toy/fspath)
+[![Code Climate](https://img.shields.io/codeclimate/github/toy/fspath.svg?style=flat)](https://codeclimate.com/github/toy/fspath)
+[![Dependency Status](https://img.shields.io/gemnasium/toy/fspath.svg?style=flat)](https://gemnasium.com/toy/fspath)
+[![Inch CI](http://inch-ci.org/github/toy/fspath.svg?branch=master&style=flat)](http://inch-ci.org/github/toy/fspath)
+
 # fspath
 
 Better than Pathname
 
 Check out [fspath-mac](https://rubygems.org/gems/fspath-mac) and [fspath-xattr](https://rubygems.org/gems/fspath-xattr).
-
-[![Build Status](https://travis-ci.org/toy/fspath.png?branch=master)](https://travis-ci.org/toy/fspath)
 
 ## Synopsis
 
