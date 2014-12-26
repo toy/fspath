@@ -196,7 +196,7 @@ describe FSPath do
     end
 
     it 'should join with arguments and expand glob' do
-      @flags = 12345
+      @flags = 12_345
       expect(FSPath).to receive(:glob).with('a/b/c/**/*', @flags)
       FSPath('a/b/c').glob('**', '*', @flags)
     end
