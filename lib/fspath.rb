@@ -254,7 +254,7 @@ end
 
 module Kernel
   # FSPath(path) method
-  def FSPath(path)
+  define_method :FSPath do |path|
     FSPath.new(path)
   end
   private :FSPath
