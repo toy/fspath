@@ -257,5 +257,5 @@ module Kernel
   def FSPath(path)
     FSPath.new(path)
   end
-  private :Pathname
+  private :FSPath
 end
