@@ -7,7 +7,9 @@ class FSPath < Pathname
   # Extension of Tempfile returning instance of provided class for path
   class Tempfile < ::Tempfile
     def initialize(path_klass, *args)
-      raise ArgumentError.new("#{path_klass.inspect} is not a class") unless path_klass.is_a?(Class)
+      unless path_klass.is_a?(Class)
+        fail ArgumentError, "#{path_klass.inspect} is not a class"
+      end
       @path_klass = path_klass
       super(*args)
     end
