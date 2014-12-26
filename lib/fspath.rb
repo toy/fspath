@@ -2,7 +2,9 @@ require 'pathname'
 require 'tempfile'
 require 'tmpdir'
 
+# Extension of Pathname with helpful methods and fixes
 class FSPath < Pathname
+  # Extension of Tempfile returning instance of provided class for path
   class Tempfile < ::Tempfile
     def initialize(path_klass, *args)
       raise ArgumentError.new("#{path_klass.inspect} is not a class") unless path_klass.is_a?(Class)
@@ -252,6 +254,7 @@ private
   end
 end
 
+# Add FSPath method as alias to FSPath.new
 module Kernel
   # FSPath(path) method
   define_method :FSPath do |path|
