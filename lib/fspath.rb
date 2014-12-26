@@ -6,6 +6,7 @@ require 'tmpdir'
 class FSPath < Pathname
   # Extension of Tempfile returning instance of provided class for path
   class Tempfile < ::Tempfile
+    # Eats first argument which must be a class, and calls super
     def initialize(path_klass, *args)
       unless path_klass.is_a?(Class)
         fail ArgumentError, "#{path_klass.inspect} is not a class"
@@ -14,10 +15,13 @@ class FSPath < Pathname
       super(*args)
     end
 
+    # Returns path wrapped in class provided in initialize
     def path
       @path_klass.new(super)
     end
 
+    # Fixes using appropriate initializer for jruby in 1.8 mode, also returns
+    # result of block in ruby 1.8
     def self.open(*args)
       tempfile = new(*args)
 
