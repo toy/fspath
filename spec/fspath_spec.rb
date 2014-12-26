@@ -9,7 +9,7 @@ describe FSPath do
   end
 
   it 'should use shortcut' do
-    expect(FSPath('.')).to be === FSPath.new('.')
+    expect(FSPath('.')).to eql(FSPath.new('.'))
   end
 
   describe '~' do
