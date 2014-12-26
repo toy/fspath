@@ -57,9 +57,9 @@ describe FSPath do
       end
 
       it "should call appropriate initializer (jruby 1.8 mode bug)" do
-        expect {
+        expect do
           klass.temp_file('abc', '.'){}
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
 
