@@ -164,7 +164,7 @@ class FSPath < Pathname
     split_names(@path).flatten
   end
 
-  unless new('a').basename.is_a?(self)
+  unless pwd.is_a?(self)
     # Fixing glob
     def self.glob(*args)
       if block_given?
