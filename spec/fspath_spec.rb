@@ -28,7 +28,8 @@ describe FSPath do
     end
 
     it 'should return common path if called with mulpitle paths' do
-      expect(FSPath.common_dir('/a/b/c/d/e', '/a/b/c/d/f', '/a/b/c/z')).to eq(FSPath('/a/b/c'))
+      expect(FSPath.common_dir('/a/b/c/d/e', '/a/b/c/d/f', '/a/b/c/z')).
+        to eq(FSPath('/a/b/c'))
     end
 
     it 'should return nil if there is no common path' do
@@ -183,7 +184,8 @@ describe FSPath do
 
   describe 'escape_glob' do
     it 'should escape glob pattern characters' do
-      expect(FSPath('*/**/?[a-z]{abc,def}').escape_glob).to eq(FSPath('\*/\*\*/\?\[a-z\]\{abc,def\}'))
+      expect(FSPath('*/**/?[a-z]{abc,def}').escape_glob).
+        to eq(FSPath('\*/\*\*/\?\[a-z\]\{abc,def\}'))
     end
   end
 

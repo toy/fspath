@@ -47,14 +47,16 @@ class FSPath < Pathname
       end.inject(:&).first
     end
 
-    # Returns or yields temp file created by Tempfile.new with path returning FSPath
+    # Returns or yields temp file created by Tempfile.new with path returning
+    # FSPath
     def temp_file(*args, &block)
       args = %w[f] if args.empty?
       Tempfile.open(self, *args, &block)
     end
 
     # Returns or yields path as FSPath of temp file created by Tempfile.new
-    # WARNING: loosing reference to returned object will remove file on nearest GC run
+    # WARNING: loosing reference to returned object will remove file on nearest
+    # GC run
     def temp_file_path(*args)
       if block_given?
         temp_file(*args) do |file|
