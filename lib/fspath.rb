@@ -132,7 +132,7 @@ class FSPath < Pathname
     paths = []
     path = @path
     paths << self
-    while r = chop_basename(path)
+    while (r = chop_basename(path))
       path = r.first
       break if path.empty?
       paths << self.class.new(del_trailing_separator(path))
