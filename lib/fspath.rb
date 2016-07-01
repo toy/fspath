@@ -177,7 +177,9 @@ class FSPath < Pathname
     # Fixing glob
     def self.glob(*args)
       if block_given?
-        super{ |f| yield new(f) }
+        super do |f|
+          yield new(f)
+        end
       else
         super.map{ |f| new(f) }
       end
@@ -244,7 +246,9 @@ class FSPath < Pathname
 
     # Fixing each_entry
     def each_entry
-      super{ |f| yield self.class.new(f) }
+      super do |f|
+        yield self.class.new(f)
+      end
     end
 
     # Fixing entries
