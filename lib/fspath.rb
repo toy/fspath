@@ -164,8 +164,13 @@ class FSPath < Pathname
   end
 
   # Returns path parts
+  #   FSPath('/a/b/c').parts    # ['/', 'a', 'b', 'c']
+  #   FSPath('a/b/c').parts     # ['a', 'b', 'c']
+  #   FSPath('./a/b/c').parts   # ['.', 'a', 'b', 'c']
+  #   FSPath('a/../b/c').parts  # ['a', '..', 'b', 'c']
   def parts
-    split_names(@path).flatten
+    prefix, parts = split_names(@path)
+    prefix.empty? ? parts : [prefix] + parts
   end
 
   unless pwd.is_a?(self)

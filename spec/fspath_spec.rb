@@ -263,8 +263,20 @@ describe FSPath do
     end
 
     describe 'parts' do
-      it 'returns path parts as strings' do
+      it 'returns path parts for absolute path' do
         expect(FSPath('/a/b/c').parts).to eq(%w[/ a b c])
+      end
+
+      it 'returns path parts for relative path' do
+        expect(FSPath('a/b/c').parts).to eq(%w[a b c])
+      end
+
+      it 'returns path parts for path prefixed with .' do
+        expect(FSPath('./a/b/c').parts).to eq(%w[. a b c])
+      end
+
+      it 'returns path parts for path containing ..' do
+        expect(FSPath('a/../b/c').parts).to eq(%w[a .. b c])
       end
     end
   end
