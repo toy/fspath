@@ -2,7 +2,7 @@
 [![Build Status](https://img.shields.io/travis/toy/fspath/master.svg?style=flat)](https://travis-ci.org/toy/fspath)
 [![Code Climate](https://img.shields.io/codeclimate/github/toy/fspath.svg?style=flat)](https://codeclimate.com/github/toy/fspath)
 [![Dependency Status](https://img.shields.io/gemnasium/toy/fspath.svg?style=flat)](https://gemnasium.com/toy/fspath)
-[![Inch CI](http://inch-ci.org/github/toy/fspath.svg?branch=master&style=flat)](http://inch-ci.org/github/toy/fspath)
+[![Inch CI](https://inch-ci.org/github/toy/fspath.svg?branch=master&style=flat)](https://inch-ci.org/github/toy/fspath)
 
 # fspath
 
