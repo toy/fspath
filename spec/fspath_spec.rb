@@ -1,8 +1,7 @@
 require 'fspath'
 
 describe FSPath do
-  class ZPath < FSPath
-  end
+  class ZPath < FSPath; end
 
   it 'inherits from Pathname' do
     expect(FSPath.new('.')).to be_kind_of(Pathname)
@@ -12,7 +11,7 @@ describe FSPath do
     expect(FSPath('.')).to eql(FSPath.new('.'))
   end
 
-  describe '~' do
+  describe '.~' do
     it 'returns current user home directory' do
       expect(FSPath.~).to eq(FSPath(File.expand_path('~')))
     end
@@ -22,7 +21,7 @@ describe FSPath do
     end
   end
 
-  describe 'common_dir' do
+  describe '.common_dir' do
     it 'returns dirname if called with one path' do
       expect(FSPath.common_dir('/a/b/c')).to eq(FSPath('/a/b'))
     end
@@ -37,52 +36,58 @@ describe FSPath do
     end
   end
 
-  [FSPath, ZPath].each do |klass|
-    describe "#{klass}.temp_file" do
-      it "returns Tempfile with path returning instance of #{klass}" do
-        expect(klass.temp_file).to be_kind_of(Tempfile)
-        expect(klass.temp_file.path).to be_kind_of(klass)
-      end
+  describe '.temp_file' do
+    [FSPath, ZPath].each do |klass|
+      context "when called on #{klass}" do
+        it "returns Tempfile with path returning instance of #{klass}" do
+          expect(klass.temp_file).to be_kind_of(Tempfile)
+          expect(klass.temp_file.path).to be_kind_of(klass)
+        end
 
-      it "yields Tempfile with path returning instance of #{klass}" do
-        yielded = nil
-        klass.temp_file{ |y| yielded = y }
-        expect(yielded).to be_kind_of(Tempfile)
-        expect(yielded.path).to be_kind_of(klass)
-      end
-
-      it 'returns result of block' do
-        expect(klass.temp_file{ :result }).to eq(:result)
-      end
-
-      it 'calls appropriate initializer (jruby 1.8 mode bug)' do
-        expect do
-          klass.temp_file('abc', '.'){}
-        end.not_to raise_error
+        it "yields Tempfile with path returning instance of #{klass}" do
+          yielded = nil
+          klass.temp_file{ |y| yielded = y }
+          expect(yielded).to be_kind_of(Tempfile)
+          expect(yielded.path).to be_kind_of(klass)
+        end
       end
     end
 
-    describe "#{klass}.temp_file_path" do
-      it "returns #{klass} with temporary path" do
-        expect(klass.temp_file_path).to be_kind_of(klass)
-      end
+    it 'returns result of block' do
+      expect(FSPath.temp_file{ :result }).to eq(:result)
+    end
 
-      it 'does not allow GC to finalize TempFile' do
-        paths = Array.new(1000){ FSPath.temp_file_path }
-        expect(paths).to be_all(&:exist?)
-        GC.start
-        expect(paths).to be_all(&:exist?)
-      end
-
-      it "yields #{klass} with temporary path" do
-        yielded = nil
-        klass.temp_file_path{ |y| yielded = y }
-        expect(yielded).to be_kind_of(klass)
-      end
+    it 'calls appropriate initializer (jruby 1.8 mode bug)' do
+      expect do
+        FSPath.temp_file('abc', '.'){}
+      end.not_to raise_error
     end
   end
 
-  describe 'temp_dir' do
+  describe '.temp_file_path' do
+    [FSPath, ZPath].each do |klass|
+      context "when called on #{klass}" do
+        it "returns an instance of #{klass} with temporary path" do
+          expect(klass.temp_file_path).to be_kind_of(klass)
+        end
+
+        it "yields an instance of #{klass} with temporary path" do
+          yielded = nil
+          klass.temp_file_path{ |y| yielded = y }
+          expect(yielded).to be_kind_of(klass)
+        end
+      end
+    end
+
+    it 'does not allow GC to finalize TempFile' do
+      paths = Array.new(1000){ FSPath.temp_file_path }
+      expect(paths).to be_all(&:exist?)
+      GC.start
+      expect(paths).to be_all(&:exist?)
+    end
+  end
+
+  describe '.temp_dir' do
     it 'returns result of running Dir.mktmpdir as FSPath instance' do
       @path = '/tmp/a/b/1'
       allow(Dir).to receive(:mktmpdir).and_return(@path)
@@ -100,7 +105,7 @@ describe FSPath do
     end
   end
 
-  describe '/' do
+  describe '#/' do
     it 'joins path with string' do
       expect(FSPath('a') / 'b').to eq(FSPath('a/b'))
     end
@@ -114,7 +119,7 @@ describe FSPath do
     end
   end
 
-  describe '+' do
+  describe '#+' do
     it 'returns instance of FSPath' do
       expect(FSPath('a') + 'b').to be_instance_of(FSPath)
     end
@@ -128,7 +133,7 @@ describe FSPath do
     end
   end
 
-  describe 'relative_path_from' do
+  describe '#relative_path_from' do
     it 'returns instance of FSPath' do
       expect(FSPath('a').relative_path_from('b')).to be_instance_of(FSPath)
     end
@@ -149,7 +154,7 @@ describe FSPath do
       allow(@file).to receive(:write).and_return(@size)
     end
 
-    describe 'write' do
+    describe '#write' do
       it 'opens file for writing' do
         expect(@path).to receive(:open).with('wb')
         @path.write(@data)
@@ -165,7 +170,7 @@ describe FSPath do
       end
     end
 
-    describe 'append' do
+    describe '#append' do
       it 'opens file for writing' do
         expect(@path).to receive(:open).with('ab')
         @path.append(@data)
@@ -182,14 +187,14 @@ describe FSPath do
     end
   end
 
-  describe 'escape_glob' do
+  describe '#escape_glob' do
     it 'escapes glob pattern characters' do
       expect(FSPath('*/**/?[a-z]{abc,def}').escape_glob).
         to eq(FSPath('\*/\*\*/\?\[a-z\]\{abc,def\}'))
     end
   end
 
-  describe 'glob' do
+  describe '#glob' do
     it 'joins with arguments and expands glob' do
       expect(FSPath).to receive(:glob).with('a/b/c/**/*')
       FSPath('a/b/c').glob('**', '*')
@@ -209,60 +214,56 @@ describe FSPath do
 
   describe 'path parts' do
     describe 'ascending' do
-      before do
-        @path = FSPath('/a/b/c')
-        @ascendants = %w[/a/b/c /a/b /a /].map(&method(:FSPath))
-      end
+      let(:path){ FSPath('/a/b/c') }
+      let(:expected){ %w[/a/b/c /a/b /a /].map(&method(:FSPath)) }
 
-      describe 'ascendants' do
+      describe '#ascendants' do
         it 'returns list of ascendants' do
-          expect(@path.ascendants).to eq(@ascendants)
+          expect(path.ascendants).to eq(expected)
         end
       end
 
-      describe 'ascend' do
+      describe '#ascend' do
         it 'returns list of ascendants' do
-          expect(@path.ascend).to eq(@ascendants)
+          expect(path.ascend).to eq(expected)
         end
 
         it 'yields and returns list of ascendants if called with block' do
           ascendants = []
-          expect(@path.ascend do |path|
-            ascendants << path
-          end).to eq(@ascendants)
-          expect(ascendants).to eq(@ascendants)
+          expect(path.ascend do |sub_path|
+            ascendants << sub_path
+          end).to eq(expected)
+          expect(ascendants).to eq(expected)
         end
       end
     end
 
     describe 'descending' do
-      before do
-        @path = FSPath('/a/b/c')
-        @descendants = %w[/ /a /a/b /a/b/c].map(&method(:FSPath))
-      end
+      let(:path){ FSPath('/a/b/c') }
+      let(:expected){ %w[/ /a /a/b /a/b/c].map(&method(:FSPath)) }
 
-      describe 'descendants' do
+      describe '#descendants' do
         it 'returns list of descendants' do
-          expect(@path.descendants).to eq(@descendants)
+          expect(path.descendants).to eq(expected)
         end
       end
 
-      describe 'descend' do
+      describe '#descend' do
         it 'returns list of descendants' do
-          expect(@path.descend).to eq(@descendants)
+          expect(path.descend).to eq(expected)
         end
 
         it 'yields and returns list of descendants if called with block' do
           descendants = []
-          expect(@path.descend do |path|
-            descendants << path
-          end).to eq(@descendants)
-          expect(descendants).to eq(@descendants)
+          expect(path.descend do |sub_path|
+            descendants << sub_path
+          end).to eq(expected)
+          expect(descendants).to eq(expected)
         end
       end
     end
 
-    describe 'parts' do
+    describe '#parts' do
       it 'returns path parts for absolute path' do
         expect(FSPath('/a/b/c').parts).to eq(%w[/ a b c])
       end
