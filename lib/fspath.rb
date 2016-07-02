@@ -64,6 +64,7 @@ class FSPath < Pathname
     def temp_file_path(*args)
       if block_given?
         temp_file(*args) do |file|
+          file.close
           yield file.path
         end
       else

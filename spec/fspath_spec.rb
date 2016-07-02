@@ -85,6 +85,31 @@ describe FSPath do
       GC.start
       expect(paths).to be_all(&:exist?)
     end
+
+    it 'returns result of block' do
+      expect(FSPath.temp_file_path{ :result }).to eq(:result)
+    end
+
+    describe 'closing file handle' do
+      before do
+        @tempfile = nil
+        allow(FSPath::Tempfile).to receive(:new).once.
+          and_wrap_original{ |m, *args| @tempfile = m.call(*args) }
+      end
+
+      it 'closes the file handle, but does not unlink path before return' do
+        path = FSPath.temp_file_path
+        expect(@tempfile).to be_closed
+        expect(path).to exist
+      end
+
+      it 'closes the file handle, but does not unlink path before yield' do
+        FSPath.temp_file_path do |path|
+          expect(@tempfile).to be_closed
+          expect(path).to exist
+        end
+      end
+    end
   end
 
   describe '.temp_dir' do
