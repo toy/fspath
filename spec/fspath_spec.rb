@@ -3,6 +3,15 @@ require 'fspath'
 describe FSPath do
   class ZPath < FSPath; end
 
+  # check_have_symlink? from test/fileutils/test_fileutils.rb
+  def self.symlinks_supported?
+    File.symlink '', ''
+  rescue NotImplementedError, Errno::EACCES
+    false
+  rescue
+    true
+  end
+
   it 'inherits from Pathname' do
     expect(FSPath.new('.')).to be_kind_of(Pathname)
   end
@@ -13,11 +22,17 @@ describe FSPath do
 
   describe '.~' do
     it 'returns current user home directory' do
-      expect(FSPath.~).to eq(FSPath(File.expand_path('~')))
+      expect(File).to receive(:expand_path).
+        with('~').and_return('/home/this')
+
+      expect(FSPath.~).to eq(FSPath('/home/this'))
     end
 
     it 'returns other user home directory' do
-      expect(FSPath.~('root')).to eq(FSPath(File.expand_path('~root')))
+      expect(File).to receive(:expand_path).
+        with('~root').and_return('/home/root')
+
+      expect(FSPath.~('root')).to eq(FSPath('/home/root'))
     end
   end
 
@@ -381,7 +396,7 @@ describe FSPath do
         symlink.make_symlink __FILE__
         fspath? symlink.readlink
       end
-    end
+    end if symlinks_supported?
 
     it 'uses FSPath for realdirpath' do
       fspath? FSPath(__FILE__).realdirpath

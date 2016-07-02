@@ -1,0 +1,21 @@
+version: '{build}-{branch}'
+install:
+build: off
+test_script:
+  - ps: |
+      $path = $env:Path
+      $rubypaths = ls -Path C:\Ruby*\bin
+      $ErrorActionPreference = "Stop"
+      foreach ($rubypath in $rubypaths) {
+        echo "################################################################################"
+        $env:Path = "$rubypath;" + $path
+        ruby --version
+        bundle config path vendor/bundle
+        bundle check
+        if (-not $?) { bundle install -j4 }
+        bundle exec rspec
+        if ($LASTEXITCODE -gt 0) {
+          exit 1
+        }
+      }
+      $env:Path = $path
