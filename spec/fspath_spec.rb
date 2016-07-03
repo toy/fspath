@@ -252,6 +252,14 @@ describe FSPath do
       end
     end
 
+    shared_examples 'appending' do
+      it 'appends data to the end of file' do
+        path.send(described_method, 'data')
+        path.send(described_method, 'more data')
+        expect(path.read).to eq('datamore data')
+      end
+    end
+
     shared_examples 'writes in text mode' do
       it 'opens file in text mode' do
         test_path = FSPath.temp_file_path
@@ -281,6 +289,18 @@ describe FSPath do
     describe '#binwrite' do
       include_examples 'writing'
       include_examples 'overwriting'
+      include_examples 'writes in binary mode'
+    end
+
+    describe '#append' do
+      include_examples 'writing'
+      include_examples 'appending'
+      include_examples 'writes in text mode'
+    end
+
+    describe '#binappend' do
+      include_examples 'writing'
+      include_examples 'appending'
       include_examples 'writes in binary mode'
     end
   end

@@ -131,6 +131,13 @@ class FSPath < Pathname
 
   # Append data to file
   def append(data)
+    open('a') do |f|
+      f.write(data)
+    end
+  end
+
+  # Append data to file opened in binary mode
+  def binappend(data)
     open('ab') do |f|
       f.write(data)
     end
