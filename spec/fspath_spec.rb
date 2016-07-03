@@ -186,6 +186,11 @@ describe FSPath do
   describe 'read/write' do
     let(:path){ FSPath.temp_file_path }
     let(:crlf_text){ "a\nb\rc\r\nd" }
+    let(:described_method){ |example| example.full_description[/#(\S+)/, 1] }
+
+    def binread(path)
+      path.open('rb', &:read)
+    end
 
     def binwrite(path, data)
       path.open('wb'){ |f| f.write(data) }
@@ -217,49 +222,66 @@ describe FSPath do
         expect(path.binread).to eq(crlf_text)
       end
     end
-  end
 
-  describe 'writing' do
-    before do
-      @path = FSPath.new('test')
-      @file = double(:file)
-      @data = double(:data)
-      @size = double(:size)
+    shared_examples 'writing' do
+      it 'writes data' do
+        path.send(described_method, 'data')
+        expect(path.read).to eq('data')
+      end
 
-      allow(@path).to receive(:open).and_yield(@file)
-      allow(@file).to receive(:write).and_return(@size)
+      it 'returns the length of data written' do
+        expect(path.send(described_method, 'data')).to eq(4)
+      end
+    end
+
+    shared_examples 'overwriting' do
+      context 'when offset is not specified' do
+        it 'overwrites file' do
+          path.send(described_method, 'longer data')
+          path.send(described_method, 'data')
+          expect(path.read).to eq('data')
+        end
+      end
+
+      context 'when offset is specified' do
+        it 'overwrites part of file and does not truncate it' do
+          path.send(described_method, 'longer data')
+          path.send(described_method, 'data', 2)
+          expect(path.read).to eq('lodata data')
+        end
+      end
+    end
+
+    shared_examples 'writes in text mode' do
+      it 'opens file in text mode' do
+        test_path = FSPath.temp_file_path
+        test_path.open('w'){ |f| f.write(crlf_text) }
+
+        path.send(described_method, crlf_text)
+        expect(binread(path)).to eq(binread(test_path))
+      end
+    end
+
+    shared_examples 'writes in binary mode' do
+      it 'opens file in binary mode' do
+        test_path = FSPath.temp_file_path
+        test_path.open('wb'){ |f| f.write(crlf_text) }
+
+        path.send(described_method, crlf_text)
+        expect(binread(path)).to eq(binread(test_path))
+      end
     end
 
     describe '#write' do
-      it 'opens file for writing' do
-        expect(@path).to receive(:open).with('wb')
-        @path.write(@data)
-      end
-
-      it 'writes data' do
-        expect(@file).to receive(:write).with(@data)
-        @path.write(@data)
-      end
-
-      it 'returns result of write' do
-        expect(@path.write(@data)).to eq(@size)
-      end
+      include_examples 'writing'
+      include_examples 'overwriting'
+      include_examples 'writes in text mode'
     end
 
-    describe '#append' do
-      it 'opens file for writing' do
-        expect(@path).to receive(:open).with('ab')
-        @path.append(@data)
-      end
-
-      it 'writes data' do
-        expect(@file).to receive(:write).with(@data)
-        @path.append(@data)
-      end
-
-      it 'returns result of write' do
-        expect(@path.append(@data)).to eq(@size)
-      end
+    describe '#binwrite' do
+      include_examples 'writing'
+      include_examples 'overwriting'
+      include_examples 'writes in binary mode'
     end
   end
 

@@ -115,10 +115,17 @@ class FSPath < Pathname
     end
   end
 
-  # Write data to file
-  def write(data)
-    open('wb') do |f|
-      f.write(data)
+  unless Pathname.method_defined?(:write)
+    # Write data to file
+    def write(data, offset = nil)
+      _write(data, offset, false)
+    end
+  end
+
+  unless Pathname.method_defined?(:binwrite)
+    # Write data to file opened in binary mode
+    def binwrite(data, offset = nil)
+      _write(data, offset, true)
     end
   end
 
@@ -279,6 +286,20 @@ private
 
   def escape_glob_string
     @path.gsub(/([\*\?\[\]\{\}])/, '\\\\\1')
+  end
+
+  def _write(data, offset, binmode)
+    mode = if offset
+      Fcntl::O_CREAT | Fcntl::O_RDWR # fix for jruby 1.8 truncating with WRONLY
+    else
+      Fcntl::O_CREAT | Fcntl::O_WRONLY | Fcntl::O_TRUNC
+    end
+
+    open(mode) do |f|
+      f.binmode if binmode
+      f.seek(offset) if offset
+      f.write(data)
+    end
   end
 end
 
