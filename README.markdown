@@ -25,17 +25,42 @@ Common dir for paths:
 
     FSPath.common_dir('/a/b/c/d/e/f', '/a/b/c/1/hello', '/a/b/c/2/world') # => FSPath('/a/b/c')
 
+Temp file (args are passed to `Tempfile.new`):
+
+    FSPath.temp_file{ |f| …; p f.path; … }
+
+    f = FSPath.temp_file
+    …
+    f.close
+
+Temp file path (args are passed to `Tempfile.new`):
+
+    FSPath.temp_file_path{ |path| …; p path; … }
+
+    path = FSPath.temp_file_path
+    …
+    # file will be removed on next GC run if reference to path is lost
+
+Temp directory (args are passed to `Dir.mktmpdir`):
+
+    FSPath.temp_dir{ |dir| …; p dir; …  }
+
+    dir = FSPath.temp_dir
+    …
+    # the dir is not removed when temp_dir is run without block
+
 Join paths:
 
     FSPath('a') / 'b' / 'c' # => FSPath('a/b/c')
 
-Write data:
+Read/write:
 
-    FSPath('a').write('data')
-
-Append data:
-
-    FSPath('a').append('data')
+    FSPath('a.txt').read
+    FSPath('b.bin').binread
+    FSPath('a.txt').write(text)
+    FSPath('b.bin').binwrite(data)
+    FSPath('a.txt').append(more_text)
+    FSPath('b.bin').binappend(more_data)
 
 Escape glob:
 
