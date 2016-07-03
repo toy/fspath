@@ -183,6 +183,42 @@ describe FSPath do
     end
   end
 
+  describe 'read/write' do
+    let(:path){ FSPath.temp_file_path }
+    let(:crlf_text){ "a\nb\rc\r\nd" }
+
+    def binwrite(path, data)
+      path.open('wb'){ |f| f.write(data) }
+    end
+
+    describe '#binread' do
+      it 'reads data' do
+        binwrite(path, 'data')
+        expect(path.binread).to eq('data')
+      end
+
+      it 'limits data when length is set' do
+        binwrite(path, 'data')
+        expect(path.binread(3)).to eq('dat')
+      end
+
+      it 'skips data when offset is set' do
+        binwrite(path, 'data')
+        expect(path.binread(nil, 1)).to eq('ata')
+      end
+
+      it 'skips and limits data when length and offset are set' do
+        binwrite(path, 'data')
+        expect(path.binread(2, 1)).to eq('at')
+      end
+
+      it 'opens file in binary mode' do
+        binwrite(path, crlf_text)
+        expect(path.binread).to eq(crlf_text)
+      end
+    end
+  end
+
   describe 'writing' do
     before do
       @path = FSPath.new('test')

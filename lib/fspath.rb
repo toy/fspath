@@ -105,6 +105,16 @@ class FSPath < Pathname
     self.class.new(super(self.class.new(other)))
   end
 
+  unless Pathname.method_defined?(:binread)
+    # Read data from file opened in binary mode
+    def binread(length = nil, offset = nil)
+      open('rb') do |f|
+        f.seek(offset) if offset
+        f.read(length)
+      end
+    end
+  end
+
   # Write data to file
   def write(data)
     open('wb') do |f|
