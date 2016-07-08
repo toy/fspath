@@ -1,5 +1,7 @@
 version: '{build}-{branch}'
 install:
+  - bundle config path vendor/bundle
+  - bundle install -j4
 build: off
 test_script:
   - ps: |
@@ -10,9 +12,6 @@ test_script:
         echo "################################################################################"
         $env:Path = "$rubypath;" + $path
         ruby --version
-        bundle config path vendor/bundle
-        bundle check
-        if (-not $?) { bundle install -j4 }
         bundle exec rspec
         if ($LASTEXITCODE -gt 0) {
           exit 1
