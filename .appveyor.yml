@@ -1,6 +1,5 @@
 version: '{build}-{branch}'
 install:
-  - bundle package --all
 build: off
 test_script:
   - ps: |
@@ -10,6 +9,7 @@ test_script:
         echo "################################################################################"
         $env:Path = "$rubypath;" + $path
         ruby --version
+        bundle package --all
         bundle install --local -j4
         bundle exec rspec
         if ($LASTEXITCODE -gt 0) {
