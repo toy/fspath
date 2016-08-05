@@ -1,6 +1,7 @@
 require 'pathname'
 require 'tempfile'
 require 'tmpdir'
+require 'fcntl'
 
 # Extension of Pathname with helpful methods and fixes
 class FSPath < Pathname
