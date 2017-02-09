@@ -151,7 +151,7 @@ class FSPath < Pathname
 
   # Expand glob
   def glob(*args, &block)
-    flags = args.last.is_a?(Fixnum) ? args.pop : nil
+    flags = args.last.is_a?(Integer) ? args.pop : nil
     args = [File.join(escape_glob_string, *args)]
     args << flags if flags
     self.class.glob(*args, &block)
