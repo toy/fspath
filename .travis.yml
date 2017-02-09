@@ -1,11 +1,15 @@
 sudo: false
 language: ruby
+before_install:
+  - if [[ $TRAVIS_RUBY_VERSION =~ ^2\.[34] ]]; then gem update --system; fi
 rvm:
   - '1.8'
   - '1.9'
   - '2.0'
   - '2.1'
   - '2.2'
+  - '2.3.3'
+  - '2.4.0'
   - jruby-18mode
   - jruby-19mode
   - ree
