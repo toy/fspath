@@ -3,7 +3,11 @@ AllCops:
     - '*.gemspec'
 
 Lint/EndAlignment:
-  AlignWith: variable
+  EnforcedStyleAlignWith: variable
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*_spec.rb
 
 Metrics/ClassLength:
   Max: 200
@@ -18,7 +22,7 @@ Style/BracesAroundHashParameters:
   Enabled: false
 
 Style/CaseIndentation:
-  IndentWhenRelativeTo: end
+  EnforcedStyle: end
 
 Style/DotPosition:
   EnforcedStyle: trailing
@@ -37,6 +41,10 @@ Style/IfUnlessModifier:
 
 Style/IndentHash:
   EnforcedStyle: consistent
+
+Style/MultilineIfModifier:
+  Exclude:
+    - spec/**/*_spec.rb
 
 Style/OpMethod: # leave name in `def ~(name = nil)`
   Enabled: false
