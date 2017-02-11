@@ -47,6 +47,7 @@ class FSPath < Pathname
 
     # Returns common dir for paths
     def common_dir(*paths)
+      fail ArgumentError, 'At least one path is required' if paths.empty?
       paths.map do |path|
         new(path).dirname.ascendants
       end.inject(:&).first

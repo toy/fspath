@@ -49,6 +49,10 @@ describe FSPath do
     it 'returns nil if there is no common path' do
       expect(FSPath.common_dir('../a', './b')).to be_nil
     end
+
+    it 'returns nil if called without parameters' do
+      expect{ FSPath.common_dir }.to raise_error(ArgumentError)
+    end
   end
 
   describe '.temp_file' do
