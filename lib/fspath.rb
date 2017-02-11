@@ -48,7 +48,7 @@ class FSPath < Pathname
     # Returns common dir for paths
     def common_dir(*paths)
       paths.map do |path|
-        new(path).ascendants.drop(1)
+        new(path).dirname.ascendants
       end.inject(:&).first
     end
 
