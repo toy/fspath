@@ -55,22 +55,22 @@ class FSPath < Pathname
 
     # Returns or yields temp file created by Tempfile.new with path returning
     # FSPath
-    def temp_file(*args, &block)
-      args = %w[f] if args.empty?
-      Tempfile.open(self, *args, &block)
+    def temp_file(prefix_suffix = nil, *args, &block)
+      prefix_suffix = fix_prefix_suffix(prefix_suffix || 'f')
+      Tempfile.open(self, prefix_suffix, *args, &block)
     end
 
     # Returns or yields path as FSPath of temp file created by Tempfile.new
     # WARNING: loosing reference to returned object will remove file on nearest
     # GC run
-    def temp_file_path(*args)
+    def temp_file_path(prefix_suffix = nil, *args)
       if block_given?
-        temp_file(*args) do |file|
+        temp_file(prefix_suffix, *args) do |file|
           file.close
           yield file.path
         end
       else
-        file = temp_file(*args)
+        file = temp_file(prefix_suffix, *args)
         file.close
         path = file.path
         path.instance_variable_set(:@__temp_file, file)
@@ -79,13 +79,24 @@ class FSPath < Pathname
     end
 
     # Returns or yields FSPath with temp directory created by Dir.mktmpdir
-    def temp_dir(*args)
+    def temp_dir(prefix_suffix = nil, *args)
+      prefix_suffix = fix_prefix_suffix(prefix_suffix || 'd')
       if block_given?
-        Dir.mktmpdir(*args) do |dir|
+        Dir.mktmpdir(prefix_suffix, *args) do |dir|
           yield new(dir)
         end
       else
-        new(Dir.mktmpdir(*args))
+        new(Dir.mktmpdir(prefix_suffix, *args))
+      end
+    end
+
+  private
+
+    def fix_prefix_suffix(prefix_suffix)
+      if prefix_suffix.is_a?(Array)
+        prefix_suffix.map(&:to_s)
+      else
+        prefix_suffix.to_s
       end
     end
   end

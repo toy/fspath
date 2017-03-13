@@ -55,6 +55,28 @@ describe FSPath do
     end
   end
 
+  shared_examples 'converts prefix_suffix' do |options|
+    it "passes default (#{options[:default].inspect}) without arguments" do
+      expect(result_path_for.basename.to_s).
+        to match(/^#{options[:default]}/)
+    end
+
+    it 'passes default when receives nil' do
+      expect(result_path_for(nil).basename.to_s).
+        to match(/^#{options[:default]}/)
+    end
+
+    it 'passes each member of Array converted to String' do
+      expect(result_path_for(FSPath('bar')).basename.to_s).
+        to match(/^bar/)
+    end
+
+    it 'passes non String converted to string' do
+      expect(result_path_for([FSPath('foo'), FSPath('.bar')]).basename.to_s).
+        to match(/^foo.*\.bar$/)
+    end
+  end
+
   describe '.temp_file' do
     [FSPath, ZPath].each do |klass|
       context "when called on #{klass}" do
@@ -80,6 +102,12 @@ describe FSPath do
       expect do
         FSPath.temp_file('abc', '.'){}
       end.not_to raise_error
+    end
+
+    include_examples 'converts prefix_suffix', :default => 'f' do
+      def result_path_for(*args)
+        FSPath.temp_file(*args).path
+      end
     end
   end
 
@@ -129,6 +157,12 @@ describe FSPath do
         end
       end
     end
+
+    include_examples 'converts prefix_suffix', :default => 'f' do
+      def result_path_for(*args)
+        FSPath.temp_file_path(*args)
+      end
+    end
   end
 
   describe '.temp_dir' do
@@ -146,6 +180,12 @@ describe FSPath do
       yielded = nil
       FSPath.temp_dir{ |y| yielded = y }
       expect(yielded).to eq(FSPath('/tmp/a/b/2'))
+    end
+
+    include_examples 'converts prefix_suffix', :default => 'd' do
+      def result_path_for(*args)
+        FSPath.temp_dir(*args)
+      end
     end
   end
 

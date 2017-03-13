@@ -10,7 +10,7 @@ Metrics/BlockLength:
     - spec/**/*_spec.rb
 
 Metrics/ClassLength:
-  Max: 200
+  Max: 250
 
 Metrics/MethodLength:
   Max: 15
