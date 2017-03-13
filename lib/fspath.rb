@@ -113,6 +113,12 @@ class FSPath < Pathname
     end
   end
 
+  # Return basename without ext and ext as two-element array
+  def prefix_suffix
+    ext = extname
+    [basename(ext), ext]
+  end
+
   # Fixing Pathname.relative_path_from
   def relative_path_from(other)
     self.class.new(super(self.class.new(other)))

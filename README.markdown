@@ -84,6 +84,10 @@ Path parts:
 
     FSPath('/a/b/c').parts # => ['/', 'a', 'b', 'c']
 
+Basename and extension:
+
+    FSPath('some/dir/name.ext').prefix_suffix # => [FSPath('name'), '.ext']
+
 ## Copyright
 
 Copyright (c) 2010-2017 Ivan Kuchin. See LICENSE.txt for details.

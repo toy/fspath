@@ -217,6 +217,43 @@ describe FSPath do
     end
   end
 
+  describe '#prefix_suffix' do
+    context 'when path has ext' do
+      it 'returns basename and ext' do
+        expect(FSPath('dir/name.foo').prefix_suffix).
+          to eq([FSPath('name'), '.foo'])
+      end
+    end
+
+    context 'when path has multiple exts' do
+      it 'returns basename and last ext' do
+        expect(FSPath('dir/name.foo.bar').prefix_suffix).
+          to eq([FSPath('name.foo'), '.bar'])
+      end
+    end
+
+    context 'when path has no ext' do
+      it 'returns basename and empty string' do
+        expect(FSPath('dir/just_name').prefix_suffix).
+          to eq([FSPath('just_name'), ''])
+      end
+    end
+
+    context 'when path starts with dot and has ext' do
+      it 'returns basename and ext' do
+        expect(FSPath('dir/.name.foo').prefix_suffix).
+          to eq([FSPath('.name'), '.foo'])
+      end
+    end
+
+    context 'when path starts with dot and has no ext' do
+      it 'returns basename and empty string' do
+        expect(FSPath('dir/.just_name').prefix_suffix).
+          to eq([FSPath('.just_name'), ''])
+      end
+    end
+  end
+
   describe '#relative_path_from' do
     it 'returns instance of FSPath' do
       expect(FSPath('a').relative_path_from('b')).to be_instance_of(FSPath)
