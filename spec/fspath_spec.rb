@@ -254,6 +254,38 @@ describe FSPath do
     end
   end
 
+  describe 'instance temp_* methods' do
+    let(:block){ proc{ 'x' } }
+    let(:args){ [[FSPath('path'), '.name'], FSPath('.')] }
+
+    describe '#temp_file' do
+      it 'calls class method with prefix_suffix as first argument' do
+        expect(FSPath).to receive(:temp_file).
+          with(*args){ |&b| expect(b).to be(block) }
+
+        FSPath('some/path.name').temp_file(FSPath('.'), &block)
+      end
+    end
+
+    describe '#temp_file_path' do
+      it 'calls class method with prefix_suffix as first argument' do
+        expect(FSPath).to receive(:temp_file_path).
+          with(*args){ |&b| expect(b).to be(block) }
+
+        FSPath('some/path.name').temp_file_path(FSPath('.'), &block)
+      end
+    end
+
+    describe '#temp_dir' do
+      it 'calls class method with prefix_suffix as first argument' do
+        expect(FSPath).to receive(:temp_dir).
+          with(*args){ |&b| expect(b).to be(block) }
+
+        FSPath('some/path.name').temp_dir(FSPath('.'), &block)
+      end
+    end
+  end
+
   describe '#relative_path_from' do
     it 'returns instance of FSPath' do
       expect(FSPath('a').relative_path_from('b')).to be_instance_of(FSPath)

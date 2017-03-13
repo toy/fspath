@@ -119,6 +119,21 @@ class FSPath < Pathname
     [basename(ext), ext]
   end
 
+  # Calls class method with prefix and suffix set using prefix_suffix
+  def temp_file(*args, &block)
+    self.class.temp_file(prefix_suffix, *args, &block)
+  end
+
+  # Calls class method with prefix and suffix set using prefix_suffix
+  def temp_file_path(*args, &block)
+    self.class.temp_file_path(prefix_suffix, *args, &block)
+  end
+
+  # Calls class method with prefix and suffix set using prefix_suffix
+  def temp_dir(*args, &block)
+    self.class.temp_dir(prefix_suffix, *args, &block)
+  end
+
   # Fixing Pathname.relative_path_from
   def relative_path_from(other)
     self.class.new(super(self.class.new(other)))
