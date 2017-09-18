@@ -56,14 +56,6 @@ Style/MultilineIfModifier:
   Exclude:
     - spec/**/*_spec.rb
 
-Style/OpMethod: # leave name in `def ~(name = nil)`
-  Enabled: false
-
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%w': '[]'
-    '%W': '[]'
-
 Style/Semicolon:
   AllowAsExpressionSeparator: true
 
