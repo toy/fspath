@@ -2,6 +2,24 @@ AllCops:
   Exclude:
     - '*.gemspec'
 
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
+Layout/SpaceBeforeBlockBraces:
+  EnforcedStyle: no_space
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*_spec.rb
@@ -19,17 +37,8 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Max: 15
 
-Style/AccessModifierIndentation:
-  EnforcedStyle: outdent
-
 Style/BracesAroundHashParameters:
   Enabled: false
-
-Style/CaseIndentation:
-  EnforcedStyle: end
-
-Style/DotPosition:
-  EnforcedStyle: trailing
 
 Style/DoubleNegation:
   Enabled: false
@@ -42,9 +51,6 @@ Style/HashSyntax:
 
 Style/IfUnlessModifier:
   MaxLineLength: 40
-
-Style/IndentHash:
-  EnforcedStyle: consistent
 
 Style/MultilineIfModifier:
   Exclude:
@@ -63,12 +69,6 @@ Style/Semicolon:
 
 Style/SignalException:
   EnforcedStyle: semantic
-
-Style/SpaceBeforeBlockBraces:
-  EnforcedStyle: no_space
-
-Style/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: no_comma
