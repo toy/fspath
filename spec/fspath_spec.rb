@@ -8,7 +8,7 @@ describe FSPath do
     File.symlink '', ''
   rescue NotImplementedError, Errno::EACCES
     false
-  rescue
+  rescue Errno::ENOENT
     true
   end
 
