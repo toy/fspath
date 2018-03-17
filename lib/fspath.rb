@@ -336,7 +336,7 @@ private
       Fcntl::O_CREAT | Fcntl::O_WRONLY | Fcntl::O_TRUNC
     end
 
-    open(mode) do |f|
+    File.open(@path, mode) do |f|
       f.binmode if binmode
       f.seek(offset) if offset
       f.write(data)
