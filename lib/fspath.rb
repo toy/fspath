@@ -346,9 +346,10 @@ end
 
 # Add FSPath method as alias to FSPath.new
 module Kernel
+private
+
   # FSPath(path) method
   define_method :FSPath do |path|
     FSPath.new(path)
   end
-  private :FSPath
 end
