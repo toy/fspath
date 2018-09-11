@@ -1,5 +1,8 @@
 version: '{build}-{branch}'
 install:
+  - set PATH=C:\Ruby25-x64\bin;%PATH%
+  - ruby --version
+  - bundle package --all
 build: off
 test_script:
   - ps: |
