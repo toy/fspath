@@ -12,6 +12,7 @@ class FSPath < Pathname
       unless path_klass.is_a?(Class)
         fail ArgumentError, "#{path_klass.inspect} is not a class"
       end
+
       @path_klass = path_klass
       super(*args)
     end
@@ -48,6 +49,7 @@ class FSPath < Pathname
     # Returns common dir for paths
     def common_dir(*paths)
       fail ArgumentError, 'At least one path is required' if paths.empty?
+
       paths.map do |path|
         new(path).dirname.ascendants
       end.inject(:&).first
@@ -198,6 +200,7 @@ class FSPath < Pathname
     while (r = chop_basename(path))
       path = r.first
       break if path.empty?
+
       paths << self.class.new(del_trailing_separator(path))
     end
     paths
