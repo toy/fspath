@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.require_paths = %w[lib]
 
   s.add_development_dependency 'rspec', '~> 3.0'
-  if RUBY_VERSION >= '2.2'
+  if RUBY_VERSION >= '2.2' && !Gem.win_platform?
     s.add_development_dependency 'rubocop', '~> 0.59'
   end
 end
