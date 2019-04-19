@@ -349,7 +349,7 @@ end
 
 # Add FSPath method as alias to FSPath.new
 module Kernel
-private
+private # rubocop:disable Layout/IndentationWidth
 
   # FSPath(path) method
   define_method :FSPath do |path|
