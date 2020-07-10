@@ -331,7 +331,7 @@ class FSPath < Pathname
 private
 
   def escape_glob_string
-    @path.gsub(/([\*\?\[\]\{\}])/, '\\\\\1')
+    @path.gsub(/([*?\[\]{}])/, '\\\\\1')
   end
 
   def _write(data, offset, binmode)
