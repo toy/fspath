@@ -67,6 +67,9 @@ Style/Semicolon:
 Style/SignalException:
   EnforcedStyle: semantic
 
+Style/StringConcatenation:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: no_comma
 

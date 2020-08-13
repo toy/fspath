@@ -585,7 +585,7 @@ describe FSPath do
 
     it 'uses FSPath for readlink' do
       FSPath.temp_dir do |dir|
-        symlink = dir + 'sym'
+        symlink = dir / 'sym'
         symlink.make_symlink __FILE__
         fspath? symlink.readlink
       end
