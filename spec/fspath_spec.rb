@@ -3,7 +3,7 @@
 require 'fspath'
 
 describe FSPath do
-  class ZPath < FSPath; end
+  zpath = Class.new(described_class)
 
   # check_have_symlink? from test/fileutils/test_fileutils.rb
   def self.symlinks_supported?
@@ -80,7 +80,7 @@ describe FSPath do
   end
 
   describe '.temp_file' do
-    [FSPath, ZPath].each do |klass|
+    [FSPath, zpath].each do |klass|
       context "when called on #{klass}" do
         it "returns Tempfile with path returning instance of #{klass}" do
           expect(klass.temp_file).to be_kind_of(Tempfile)
@@ -114,7 +114,7 @@ describe FSPath do
   end
 
   describe '.temp_file_path' do
-    [FSPath, ZPath].each do |klass|
+    [FSPath, zpath].each do |klass|
       context "when called on #{klass}" do
         it "returns an instance of #{klass} with temporary path" do
           expect(klass.temp_file_path).to be_kind_of(klass)
