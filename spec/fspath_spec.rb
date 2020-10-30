@@ -102,7 +102,7 @@ describe FSPath do
 
     it 'calls appropriate initializer (jruby 1.8 mode bug)' do
       expect do
-        FSPath.temp_file('abc', '.'){}
+        FSPath.temp_file('abc', '.'){ nil }
       end.not_to raise_error
     end
 
