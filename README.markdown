@@ -1,5 +1,5 @@
 [![Gem Version](https://img.shields.io/gem/v/fspath.svg?style=flat)](https://rubygems.org/gems/fspath)
-[![Build Status](https://img.shields.io/travis/toy/fspath/master.svg?style=flat)](https://travis-ci.org/toy/fspath)
+[![Build Status](https://img.shields.io/github/workflow/status/toy/fspath/check/master?logo=github)](https://github.com/toy/fspath/actions/workflows/check.yml)
 [![AppVeyor Status](https://img.shields.io/appveyor/ci/toy/fspath/master.svg?style=flat&label=windows)](https://ci.appveyor.com/project/toy/fspath)
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/toy/fspath.svg?style=flat)](https://codeclimate.com/github/toy/fspath)
 [![Depfu](https://badges.depfu.com/badges/713ede61b82ee98a3e86a374b5278d28/overview.svg)](https://depfu.com/github/toy/image_optim_rails)
