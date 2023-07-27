@@ -40,6 +40,9 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Max: 15
 
+Style/ArgumentsForwarding:
+  Enabled: false
+
 Style/DoubleNegation:
   Enabled: false
 
