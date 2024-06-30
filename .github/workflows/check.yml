@@ -35,7 +35,8 @@ jobs:
     strategy:
       matrix:
         container:
-        - ruby:2.0
+        - rspec/ci:1.9.3
+        - rspec/ci:2.0.0
         - ruby:2.1
         - ruby:2.2
       fail-fast: false
