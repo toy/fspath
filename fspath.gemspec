@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.0'
   if RUBY_VERSION >= '2.5' && !Gem.win_platform?
     s.add_development_dependency 'rubocop', '~> 1.22', '!= 1.22.2'
-    s.add_development_dependency 'rubocop-rspec', '~> 2.0'
+    s.add_development_dependency 'rubocop-rspec', '~> 3.4'
   end
 end
