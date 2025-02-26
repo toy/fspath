@@ -105,13 +105,20 @@ class FSPath < Pathname
     end
   end
 
-  # Join paths using File.join
+  # Join paths using File.join, simply joins paths unlike `+`
+  #     usr = FSPath("/usr/local")  # #<FSPath:/usr/local>
+  #     usr / "bin/ruby"            # #<FSPath:/usr/local/bin/ruby>
+  #     usr + "bin/ruby"            # #<FSPath:/usr/local/bin/ruby>
+  #     usr / "/etc/passwd"         # #<FSPath:/usr/local/etc/passwd>
+  #     usr + "/etc/passwd"         # #<FSPath:/etc/passwd>
+  #     usr / "../etc/passwd"       # #<FSPath:/usr/local/../etc/passwd>
+  #     usr + "../etc/passwd"       # #<FSPath:/usr/etc/passwd>
   def /(other)
     self.class.new(File.join(@path, other.to_s))
   end
 
   unless (new('a') + 'b').is_a?(self)
-    # Fixing Pathname#+
+    # Fixing Pathname#+ to return instance of same class
     def +(other)
       self.class.new(super)
     end
@@ -138,7 +145,7 @@ class FSPath < Pathname
     self.class.temp_dir(prefix_suffix, *args, &block)
   end
 
-  # Fixing Pathname.relative_path_from
+  # Fixing Pathname.relative_path_from to return instance of same class
   def relative_path_from(other)
     self.class.new(super(self.class.new(other)))
   end
@@ -228,17 +235,17 @@ class FSPath < Pathname
   end
 
   # Returns path parts
-  #   FSPath('/a/b/c').parts    # ['/', 'a', 'b', 'c']
-  #   FSPath('a/b/c').parts     # ['a', 'b', 'c']
-  #   FSPath('./a/b/c').parts   # ['.', 'a', 'b', 'c']
-  #   FSPath('a/../b/c').parts  # ['a', '..', 'b', 'c']
+  #     FSPath('/a/b/c').parts    # ['/', 'a', 'b', 'c']
+  #     FSPath('a/b/c').parts     # ['a', 'b', 'c']
+  #     FSPath('./a/b/c').parts   # ['.', 'a', 'b', 'c']
+  #     FSPath('a/../b/c').parts  # ['a', '..', 'b', 'c']
   def parts
     prefix, parts = split_names(@path)
     prefix.empty? ? parts : [prefix] + parts
   end
 
   unless pwd.is_a?(self)
-    # Fixing glob
+    # Fixing glob to return/yield instances of same class
     def self.glob(*args)
       if block_given?
         super do |f|
@@ -249,80 +256,80 @@ class FSPath < Pathname
       end
     end
 
-    # Fixing getwd
+    # Fixing getwd to return instance of same class
     def self.getwd
       new(super)
     end
 
-    # Fixing pwd
+    # Fixing pwd to return instance of same class
     def self.pwd
       new(super)
     end
 
-    # Fixing basename
+    # Fixing basename to return instance of same class
     def basename(*args)
       self.class.new(super)
     end
 
-    # Fixing dirname
+    # Fixing dirname to return instance of same class
     def dirname
       self.class.new(super)
     end
 
-    # Fixing expand_path
+    # Fixing expand_path to return instance of same class
     def expand_path(*args)
       self.class.new(super)
     end
 
-    # Fixing split
+    # Fixing split to return instances of same class
     def split
       super.map{ |f| self.class.new(f) }
     end
 
-    # Fixing sub
+    # Fixing sub to return instance of same class
     def sub(pattern, *rest, &block)
       self.class.new(super)
     end
 
     if Pathname.method_defined?(:sub_ext)
-      # Fixing sub_ext
+      # Fixing sub_ext to return instance of same class
       def sub_ext(ext)
         self.class.new(super)
       end
     end
 
-    # Fixing realpath
+    # Fixing realpath to return instance of same class
     def realpath
       self.class.new(super)
     end
 
     if Pathname.method_defined?(:realdirpath)
-      # Fixing realdirpath
+      # Fixing realdirpath to return instance of same class
       def realdirpath
         self.class.new(super)
       end
     end
 
-    # Fixing readlink
+    # Fixing readlink to return instance of same class
     def readlink
       self.class.new(super)
     end
 
-    # Fixing each_entry
+    # Fixing each_entry to yield instances of same class
     def each_entry
       super do |f|
         yield self.class.new(f)
       end
     end
 
-    # Fixing entries
+    # Fixing entries to return instances of same class
     def entries
       super.map{ |f| self.class.new(f) }
     end
   end
 
   unless new('a').inspect.include?('FSPath')
-    # Fixing inspect
+    # Fixing inspect to contain correct name of the class
     def inspect
       "#<#{self.class}:#{@path}>"
     end
