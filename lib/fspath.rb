@@ -361,7 +361,7 @@ module Kernel
 private
 
   # FSPath(path) method
-  define_method :FSPath do |path|
+  def FSPath(path) # rubocop:disable Naming/MethodName
     FSPath.new(path)
   end
 end
