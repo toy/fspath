@@ -357,7 +357,7 @@ private
 end
 
 # Add FSPath method as alias to FSPath.new
-module Kernel
+Kernel.module_eval do
 private
 
   # FSPath(path) method
